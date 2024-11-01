@@ -90,7 +90,7 @@ export const SkillsPage = () => {
     },
   ];
   return (
-    <section className="flex h-full w-full flex-wrap items-start justify-start px-0 pb-[100px] lg:flex-col lg:justify-center lg:space-y-8 lg:px-[250px] lg:pb-0">
+    <section className="skill-container pt-[50px] md:pt-0">
       <SkillsSection skills={frontEndSkills} title="Front End" />
       <SkillsSection skills={backEndSkills} title="Back End" />
       <SkillsSection skills={devOpsSkills} title="Dev Ops " />

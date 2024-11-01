@@ -61,9 +61,11 @@
 }
 .cube__face--right {
   transform: rotateY(90deg) translateZ(var(--half-cube-size));
+  container-type: inline-size;
 }
 .cube__face--back {
   transform: rotateY(180deg) translateZ(var(--half-cube-size));
+  container-type: inline-size;
 }
 .cube__face--left {
   transform: rotateY(-90deg) translateZ(var(--half-cube-size));
@@ -103,6 +105,14 @@
   animation: fadeIn 2s forwards;
 }
 
+.fade-in-shadow {
+  animation: fadeIn 1.5s forwards;
+}
+
+.fade-out-shadow {
+  animation: fadeOut 0.1s forwards;
+}
+
 @keyframes fadeOut {
   from {
     opacity: 1;
@@ -118,5 +128,70 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+.skill-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Container Query for large screens */
+@container (min-width: 1024px) {
+  .skill-container {
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 250px;
+    padding-right: 250px;
+    padding-bottom: 0;
+    gap: 2rem; /* Space between items */
+  }
+}
+
+.pictures-section {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.pictures-container {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.portfolio-container {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+@container (min-width: 1024px) {
+  .pictures-container {
+    padding-left: 250px;
+    padding-right: 250px;
+  }
+}
+
+@container (min-width: 1024px) {
+  .portfolio-container {
+    padding-left: 250px;
+    padding-right: 250px;
+  }
+}
+
+.experience-container {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+@container (min-width: 1024px) {
+  .experience-container {
+    padding-left: 250px;
+    padding-right: 250px;
   }
 }
