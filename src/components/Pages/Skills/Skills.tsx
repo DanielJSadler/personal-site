@@ -90,7 +90,7 @@ export const SkillsPage = () => {
     },
   ];
   return (
-    <section className="skill-container pt-[50px] md:pt-0">
+    <section className="skill-container">
       <SkillsSection skills={frontEndSkills} title="Front End" />
       <SkillsSection skills={backEndSkills} title="Back End" />
       <SkillsSection skills={devOpsSkills} title="Dev Ops " />

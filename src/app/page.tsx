@@ -47,7 +47,7 @@ export default function HomePage() {
         setTimeout(() => {
           setIsFullScreen(true);
           setShowContent(true);
-        }, 500);
+        }, 1000);
       }, 1000);
     } else {
       setCurrentClass(`show-${side}`);
@@ -61,7 +61,7 @@ export default function HomePage() {
   return (
     <main
       className={clsx(
-        "relative flex max-h-screen min-h-screen flex-col overflow-y-hidden scroll-smooth bg-powederBlue text-white",
+        "relative flex max-h-screen min-h-screen flex-col overflow-x-hidden overflow-y-hidden scroll-smooth bg-powederBlue text-white",
         { "is-fullscreen": isFullScreen },
       )}
     >

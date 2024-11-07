@@ -58,6 +58,7 @@
 
 .cube__face--front {
   transform: rotateY(0deg) translateZ(var(--half-cube-size));
+  container-type: inline-size;
 }
 .cube__face--right {
   transform: rotateY(90deg) translateZ(var(--half-cube-size));
@@ -69,12 +70,15 @@
 }
 .cube__face--left {
   transform: rotateY(-90deg) translateZ(var(--half-cube-size));
+  container-type: inline-size;
 }
 .cube__face--top {
   transform: rotateX(90deg) translateZ(var(--half-cube-size));
+  container-type: inline-size;
 }
 .cube__face--bottom {
   transform: rotateX(-90deg) translateZ(var(--half-cube-size));
+  container-type: inline-size;
 }
 
 /* Cube rotation classes */
@@ -138,7 +142,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-
+  padding-bottom: 100px;
   padding-left: 0;
   padding-right: 0;
 }
@@ -150,6 +154,7 @@
     flex-direction: column;
     padding-left: 250px;
     padding-right: 250px;
+    justify-content: flex-start;
     padding-bottom: 0;
     gap: 2rem; /* Space between items */
   }
