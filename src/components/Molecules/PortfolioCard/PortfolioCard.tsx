@@ -23,9 +23,12 @@ export const PortfolioCard = ({ name, url, picture }: Props) => {
         className="h-[100px] w-[200px] lg:h-full lg:w-full"
       />
       <div className="flex w-full max-w-[500px] flex-row items-center justify-between">
-        <p className="text-sm lg:text-base">{name}</p>
+        <p className="font-helvetica text-sm text-black lg:text-base">
+          {name.toUpperCase()}
+        </p>
         <ArrowRightIcon
           height={20}
+          color="black"
           className="transition-all duration-200 group-hover/card:translate-x-1 group-hover/card:scale-110"
         />
       </div>

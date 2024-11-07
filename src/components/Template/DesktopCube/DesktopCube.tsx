@@ -94,56 +94,98 @@ const DesktopCube = forwardRef<DesktopCubeRef, DesktopCubeProps>(
     return (
       <main
         className={clsx(
-          "relative flex max-h-screen min-h-screen flex-col overflow-x-hidden overflow-y-hidden scroll-smooth bg-powederBlue text-white",
+          "relative flex max-h-screen min-h-screen flex-col overflow-x-hidden overflow-y-hidden scroll-smooth bg-[#D8D8D8] text-white",
           { "is-fullscreen": isFullScreen },
         )}
       >
         <Navigation handleButtonClick={handleButtonClick} />
-        <div className={clsx("scene", { "scene-fullscreen": isFullScreen })}>
-          <div className={clsx("cube", currentClass)} ref={cubeRef}>
-            <div className="cube__face cube__face--front bg-gradient-to-r from-orange-500 to-red-500">
+        <div
+          className={clsx("scene flex items-center justify-center", {
+            "scene-fullscreen": isFullScreen,
+          })}
+        >
+          {/* Front Gradient */}
+          <div
+            className={clsx(
+              `absolute h-2/3 w-2/3 rounded-full bg-gradient-to-b from-[#00C2FF] to-[#293FFF] blur-3xl transition-opacity duration-[700ms]`,
+              {
+                "opacity-100": currentClass === "show-front",
+                "opacity-0": currentClass !== "show-front",
+              },
+            )}
+          />
+
+          {/* Right Gradient */}
+          <div
+            className={clsx(
+              `absolute h-2/3 w-2/3 rounded-full bg-gradient-to-b from-[#00C2FF] to-[#FF29C3] blur-3xl transition-opacity duration-[700ms]`,
+              {
+                "opacity-100": currentClass === "show-right",
+                "opacity-0": currentClass !== "show-right",
+              },
+            )}
+          />
+
+          {/* Back Gradient */}
+          <div
+            className={clsx(
+              `absolute h-2/3 w-2/3 rounded-full bg-gradient-to-b from-[#FF29C3] to-[#FFD700] blur-3xl transition-opacity duration-[700ms]`,
+              {
+                "opacity-100": currentClass === "show-back",
+                "opacity-0": currentClass !== "show-back",
+              },
+            )}
+          />
+
+          {/* Left Gradient */}
+          <div
+            className={clsx(
+              `absolute h-2/3 w-2/3 rounded-full bg-gradient-to-b from-[#FFD700] to-[#4CAF50] blur-3xl transition-opacity duration-[700ms]`,
+              {
+                "opacity-100": currentClass === "show-left",
+                "opacity-0": currentClass !== "show-left",
+              },
+            )}
+          />
+
+          {/* Top Gradient */}
+          <div
+            className={clsx(
+              `absolute h-2/3 w-2/3 rounded-full bg-gradient-to-b from-[#4CAF50] to-[#FF5733] blur-3xl transition-opacity duration-[700ms]`,
+              {
+                "opacity-100": currentClass === "show-top",
+                "opacity-0": currentClass !== "show-top",
+              },
+            )}
+          />
+
+          {/* Bottom Gradient */}
+          <div
+            className={clsx(
+              `absolute h-2/3 w-2/3 rounded-full bg-gradient-to-b from-[#FF5733] to-[#00C2FF] blur-3xl transition-opacity duration-[700ms]`,
+              {
+                "opacity-100": currentClass === "show-bottom",
+                "opacity-0": currentClass !== "show-bottom",
+              },
+            )}
+          />
+          <div
+            className={clsx(
+              "cube flex items-center justify-center",
+              currentClass,
+            )}
+            ref={cubeRef}
+          >
+            <Homepage showContent={showContent} />
+
+            <Pictures showContent={showContent} />
+
+            <SkillsPage showContent={showContent} />
+
+            <Portfolio showContent={showContent} />
+            <div className="cube__face cube__face--top bg-gradient-to-t @container/experience">
               <div
-                className={clsx("h-full w-full", {
-                  "fade-in": showContent,
-                  "fade-out": !showContent,
-                })}
-              >
-                <Homepage />
-              </div>
-            </div>
-            <div className="cube__face cube__face--back bg-gradient-to-t from-purple-500 to-indigo-500">
-              <div
-                className={clsx("h-full w-full", {
-                  "fade-in": showContent,
-                  "fade-out": !showContent,
-                })}
-              >
-                <Pictures />
-              </div>
-            </div>
-            <div className="cube__face cube__face--right bg-gradient-to-r from-red-500 to-purple-500 @container">
-              <div
-                className={clsx("h-full w-full @container/skills", {
-                  "fade-in": showContent,
-                  "fade-out": !showContent,
-                })}
-              >
-                <SkillsPage />
-              </div>
-            </div>
-            <div className="cube__face cube__face--left bg-gradient-to-r from-purple-500 to-orange-500 @container">
-              <div
-                className={clsx("h-full w-full", {
-                  "fade-in": showContent,
-                  "fade-out": !showContent,
-                })}
-              >
-                <Portfolio />
-              </div>
-            </div>
-            <div className="cube__face cube__face--top bg-gradient-to-t from-orange-500 to-purple-500 @container/experience">
-              <div
-                className={clsx("h-full w-full", {
+                className={clsx("z-50 h-full w-full bg-white/35", {
                   "fade-in": showContent,
                   "fade-out": !showContent,
                 })}
@@ -154,9 +196,9 @@ const DesktopCube = forwardRef<DesktopCubeRef, DesktopCubeProps>(
                 />
               </div>
             </div>
-            <div className="cube__face cube__face--bottom bg-gradient-to-b from-red-500 to-purple-500 @container/experience">
+            <div className="cube__face cube__face--bottom flex items-center justify-center @container/experience">
               <div
-                className={clsx("h-full w-full", {
+                className={clsx("z-50 h-full w-full bg-white/35", {
                   "fade-in": showContent,
                   "fade-out": !showContent,
                 })}
@@ -168,12 +210,6 @@ const DesktopCube = forwardRef<DesktopCubeRef, DesktopCubeProps>(
               </div>
             </div>
           </div>
-          <div
-            className={clsx(
-              "absolute -bottom-[100px] left-[100px] -z-10 h-[300px] w-[500px] -skew-x-[20deg] bg-gray-600 blur-3xl transition-opacity duration-500",
-              { "fade-in-shadow": !isFullScreen, "fade-out": isFullScreen },
-            )}
-          />
         </div>
       </main>
     );
