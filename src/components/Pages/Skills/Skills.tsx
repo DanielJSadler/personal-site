@@ -1,7 +1,11 @@
+import clsx from "clsx";
 import { type Skills } from "~/components/Skills/skills.types";
 import { SkillsSection } from "~/components/Skills/SkillsSection";
 
-export const SkillsPage = () => {
+interface Props {
+  showContent: boolean;
+}
+export const SkillsPage = ({ showContent }: Props) => {
   const frontEndSkills: Skills[] = [
     {
       skill: "React",
@@ -90,10 +94,19 @@ export const SkillsPage = () => {
     },
   ];
   return (
-    <section className="skill-container">
-      <SkillsSection skills={frontEndSkills} title="Front End" />
-      <SkillsSection skills={backEndSkills} title="Back End" />
-      <SkillsSection skills={devOpsSkills} title="Dev Ops " />
-    </section>
+    <div className="cube__face cube__face--right z-50 flex items-center justify-center @container">
+      <div
+        className={clsx("z-50 h-full w-full bg-white/35 @container/skills", {
+          "fade-in": showContent,
+          "fade-out": !showContent,
+        })}
+      >
+        <section className="skill-container z-50">
+          <SkillsSection skills={frontEndSkills} title="Front End" />
+          <SkillsSection skills={backEndSkills} title="Back End" />
+          <SkillsSection skills={devOpsSkills} title="Dev Ops " />
+        </section>
+      </div>
+    </div>
   );
 };

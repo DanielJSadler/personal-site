@@ -9,7 +9,7 @@ interface Props {
 export const SkillsSection = ({ skills, title }: Props) => {
   return (
     <div className="flex flex-shrink flex-col items-start space-y-2 rounded-2xl p-8">
-      <h3>{title}: </h3>
+      <h3 className="font-helvetica text-black">{title.toUpperCase()}: </h3>
       <div className="flex flex-wrap gap-2">
         {skills.map((skill) => (
           <a href={skill.url} key={skill.skill}>

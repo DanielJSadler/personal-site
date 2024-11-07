@@ -227,3 +227,37 @@
 .loadingFadeIn {
   animation: loadingFade 0.5s ease-out forwards;
 }
+
+.secondary-cube {
+  position: absolute;
+  width: calc(var(--half-cube-size));
+  height: calc(var(--half-cube-size));
+  transform-style: preserve-3d;
+  transform: translateZ(50px);
+}
+
+.secondary-cube__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.secondary-cube__face--front {
+  transform: rotateY(0deg) translateZ(calc(var(--half-cube-size) / 2));
+}
+.secondary-cube__face--back {
+  transform: rotateY(180deg) translateZ(calc(var(--half-cube-size) / 2));
+}
+.secondary-cube__face--right {
+  transform: rotateY(90deg) translateZ(calc(var(--half-cube-size) / 2));
+}
+.secondary-cube__face--left {
+  transform: rotateY(-90deg) translateZ(calc(var(--half-cube-size) / 2));
+}
+.secondary-cube__face--top {
+  transform: rotateX(90deg) translateZ(calc(var(--half-cube-size) / 2));
+}
+.secondary-cube__face--bottom {
+  transform: rotateX(-90deg) translateZ(calc(var(--half-cube-size) / 2));
+}
