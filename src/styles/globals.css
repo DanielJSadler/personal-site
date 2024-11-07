@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  --main-circle-size: 120px;
   --cube-size: calc(100vh - 200px);
   --half-cube-size: calc((100vh - 200px) / 2);
 }
@@ -199,4 +200,30 @@
     padding-left: 250px;
     padding-right: 250px;
   }
+}
+@keyframes fadeInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes loadingFade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loadingfadeInFromLeft {
+  animation: fadeInFromLeft 0.2s ease-out forwards;
+}
+
+.loadingFadeIn {
+  animation: loadingFade 0.5s ease-out forwards;
 }

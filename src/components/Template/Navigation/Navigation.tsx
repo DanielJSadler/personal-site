@@ -1,4 +1,4 @@
-import { Button } from "~/components/Button";
+import { Button } from "~/components/Atoms/Button";
 
 interface Props {
   handleButtonClick: (side: string) => void;
