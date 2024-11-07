@@ -1,2 +1,2 @@
-export * from "./Button";
-export * from "./Pill";
+export * from "./Atoms/Button";
+export * from "./Atoms/Pill";

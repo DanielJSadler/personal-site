@@ -1,4 +1,4 @@
-import { PortfolioCard } from "~/components/PortfolioCard";
+import { PortfolioCard } from "~/components/Molecules/PortfolioCard";
 
 export const Portfolio = () => {
   const projects = [

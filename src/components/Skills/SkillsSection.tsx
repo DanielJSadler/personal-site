@@ -1,4 +1,4 @@
-import { Pill } from "../Pill";
+import { Pill } from "../Atoms/Pill";
 import { type Skills } from "./skills.types";
 
 interface Props {
