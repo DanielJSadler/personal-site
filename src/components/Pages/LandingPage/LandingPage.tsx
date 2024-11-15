@@ -1,4 +1,7 @@
-import { DanielSadlerSvg } from "~/components/Atoms/DanielSadlerSvg";
+import {
+  DanielSadlerSvg,
+  MobileDanielSadlerSvg,
+} from "~/components/Atoms/DanielSadlerSvg";
 interface Props {
   visible: boolean;
   onClick: () => void;
@@ -31,7 +34,8 @@ export const LandingPage = ({
   return (
     <section
       onClick={onClick}
-      className={`landing-page absolute z-50 flex h-screen w-screen flex-col items-center justify-center bg-black ${visible ? `flex` : `hidden`}`}
+      style={{ zIndex: 1000 }}
+      className={`landing-page absolute flex h-screen w-screen flex-col items-center justify-center bg-black ${visible ? `flex` : `hidden`}`}
     >
       {visible && (
         <AnimatedCursor
@@ -49,7 +53,8 @@ export const LandingPage = ({
         </AnimatedCursor>
       )}
       <div>
-        <DanielSadlerSvg fill="white" />
+        <DanielSadlerSvg fill="white" className="hidden md:flex" />
+        <MobileDanielSadlerSvg fill="white" className="flex md:hidden" />
         <div className="h-2">
           {loading && <LoadingBar segments={loadingArray} />}
         </div>

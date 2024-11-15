@@ -1,17 +1,31 @@
+import clsx from "clsx";
+import { MobileDanielSadlerSvg } from "~/components/Atoms/DanielSadlerSvg";
+
 interface Props {
   text: string;
   header: string;
+  showContent: boolean;
 }
 
-export const Experience = ({ header, text }: Props) => {
+export const Experience = ({ header, text, showContent }: Props) => {
   return (
-    <section className="experience-container flex h-full w-full flex-col items-center justify-center space-y-8 px-8">
-      <div className="space-y-4">
-        <h1 className="font-helvetica text-left text-4xl text-black lg:text-6xl">
-          {header.toUpperCase()}
-        </h1>
-        <h2 className="text-left text-sm text-black lg:text-xl">{text}</h2>
-      </div>
-    </section>
+    <div
+      className={clsx("z-50 h-full w-full bg-white/35 duration-1000", {
+        "fade-in": showContent,
+        "fade-out": !showContent,
+      })}
+    >
+      <section className="experience-container flex h-full w-full flex-col items-center justify-around space-y-8 px-8 pb-[200px] md:pb-0">
+        <MobileDanielSadlerSvg className="flex md:hidden" />
+        <div className="space-y-4">
+          <h1 className="text-center font-helvetica text-xl text-black md:text-left md:text-3xl">
+            {header.toUpperCase()}
+          </h1>
+          <h2 className="text-center text-sm text-black md:text-left md:text-xl">
+            {text}
+          </h2>
+        </div>
+      </section>
+    </div>
   );
 };

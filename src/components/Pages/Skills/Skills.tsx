@@ -94,19 +94,20 @@ export const SkillsPage = ({ showContent }: Props) => {
     },
   ];
   return (
-    <div className="cube__face cube__face--right z-50 flex items-center justify-center @container">
-      <div
-        className={clsx("z-50 h-full w-full bg-white/35 @container/skills", {
+    <div
+      className={clsx(
+        "z-50 h-full w-full bg-white/35 duration-1000 @container/skills",
+        {
           "fade-in": showContent,
           "fade-out": !showContent,
-        })}
-      >
-        <section className="skill-container z-50">
-          <SkillsSection skills={frontEndSkills} title="Front End" />
-          <SkillsSection skills={backEndSkills} title="Back End" />
-          <SkillsSection skills={devOpsSkills} title="Dev Ops " />
-        </section>
-      </div>
+        },
+      )}
+    >
+      <section className="skill-container z-50">
+        <SkillsSection skills={frontEndSkills} title="Front End" />
+        <SkillsSection skills={backEndSkills} title="Back End" />
+        <SkillsSection skills={devOpsSkills} title="Dev Ops " />
+      </section>
     </div>
   );
 };

@@ -1,9 +1,10 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LandingPage } from "~/components/Pages";
 import localFont from "next/font/local";
-import { DesktopCubeRef } from "~/utils/type";
+import { type DesktopCubeRef } from "~/utils/type";
 import DesktopCube from "~/components/Template/DesktopCube/DesktopCube";
+import { Mobile } from "~/components/Template/Mobile/Mobile";
 const helveticaNeue = localFont({
   src: [
     {
@@ -91,32 +92,53 @@ const helveticaNeue = localFont({
 });
 
 const Page = () => {
+  const [currentClass, setCurrentClass] = useState("show-front");
   const [visible, setVisible] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [loadingArray, setLoadingArray] = useState<string[]>([]); // Array to hold loading messages
+  const [loadingArray, setLoadingArray] = useState<string[]>([]);
   const cubeRef = useRef<DesktopCubeRef>(null);
 
   const handleClick = async () => {
     setLoading(true);
-    await cubeRef.current?.rotateCube(); // Call the rotateCube function
+    await cubeRef.current?.rotateCube();
     setTimeout(() => {
       console.log("Setting visible to false");
       setVisible(false);
-      setLoading(false); // Stops loading indication if needed
-    }, 1000); // Adjust delay as needed
+      setLoading(false);
+    }, 1000);
   };
+
+  useEffect(() => {
+    if (!visible) {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+      window.addEventListener("resize", () => {
+        document.documentElement.style.setProperty("--vh", `${vh}px`);
+      });
+    }
+  }, [visible]);
 
   return (
     <div
-      className={`relative h-screen w-screen ${visible ? `cursor-none` : `cursor-auto`} ${helveticaNeue.className}`}
+      style={{ height: "calc(var(--vh, 1vh) * 100)" }}
+      className={`relative h-screen w-screen overflow-y-hidden ${visible ? `cursor-none` : `cursor-default`} ${helveticaNeue.className}`}
     >
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="viewport" content="width=device-width" />
       <LandingPage
         onClick={handleClick}
         visible={visible}
         loading={loading}
         loadingArray={loadingArray}
       />
-      <DesktopCube ref={cubeRef} setLoadingArray={setLoadingArray} />
+      <DesktopCube
+        currentClass={currentClass}
+        setCurrentClass={setCurrentClass}
+        loading={loading}
+        ref={cubeRef}
+        setLoadingArray={setLoadingArray}
+      />
+      <Mobile currentClass={currentClass} setCurrentClass={setCurrentClass} />
     </div>
   );
 };
