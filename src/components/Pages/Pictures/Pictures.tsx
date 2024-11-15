@@ -57,23 +57,21 @@ interface Props {
 }
 export const Pictures = ({ showContent }: Props) => {
   return (
-    <div className="cube__face cube__face--back">
-      <div
-        className={clsx("h-full w-full bg-white/35", {
-          "fade-in": showContent,
-          "fade-out": !showContent,
-        })}
-      >
-        <div className="pictures-container h-full w-full pb-[250px] pt-[50px] lg:pb-[100px] lg:pt-[100px]">
-          <p className="font-helvetica pb-4 text-xl text-black">
-            {`Some pictures of me doing the things I love!`.toUpperCase()}
-          </p>
-          <div className="pictures-section">
-            <MasonryPhotoAlbum
-              photos={photos}
-              render={{ image: renderNextImage }}
-            />
-          </div>
+    <div
+      className={clsx("h-full w-full bg-white/35 duration-1000", {
+        "fade-in": showContent,
+        "fade-out": !showContent,
+      })}
+    >
+      <div className="pictures-container h-full w-full pb-[250px] pt-[50px] lg:pb-[100px] lg:pt-[100px]">
+        <p className="pb-4 font-helvetica text-xl text-black">
+          {`Some pictures of me doing the things I love!`.toUpperCase()}
+        </p>
+        <div className="pictures-section">
+          <MasonryPhotoAlbum
+            photos={photos}
+            render={{ image: renderNextImage }}
+          />
         </div>
       </div>
     </div>

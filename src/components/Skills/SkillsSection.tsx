@@ -8,9 +8,11 @@ interface Props {
 
 export const SkillsSection = ({ skills, title }: Props) => {
   return (
-    <div className="flex flex-shrink flex-col items-start space-y-2 rounded-2xl p-8">
-      <h3 className="font-helvetica text-black">{title.toUpperCase()}: </h3>
-      <div className="flex flex-wrap gap-2">
+    <div className="flex flex-shrink flex-col items-center space-y-2 rounded-2xl p-6 md:items-start md:p-8">
+      <h3 className="font-helvetica text-xs text-black md:text-base">
+        {title.toUpperCase()}{" "}
+      </h3>
+      <div className="flex flex-wrap items-center justify-center gap-2 md:items-start md:justify-start">
         {skills.map((skill) => (
           <a href={skill.url} key={skill.skill}>
             <Pill label={skill.skill} />
