@@ -99,6 +99,9 @@ const Page = () => {
   const cubeRef = useRef<DesktopCubeRef>(null);
 
   const handleClick = async () => {
+    if (loading) {
+      return;
+    }
     setLoading(true);
     await cubeRef.current?.rotateCube();
     setTimeout(() => {

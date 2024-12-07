@@ -9,15 +9,6 @@
 }
 
 /* Media query for landscape orientation */
-@media (orientation: portrait) {
-  :root {
-    --vh: 100vh;
-    --cube-size: calc(100vw - 200px); /* Adjust cube size for landscape */
-    --half-cube-size: calc(
-      (100vw - 200px) / 2
-    ); /* Adjust half cube size for landscape */
-  }
-}
 
 .scene {
   width: var(--cube-size);
@@ -226,4 +217,10 @@
 
 .loadingFadeIn {
   animation: loadingFade 0.5s ease-out forwards;
+}
+
+.test {
+  height: 800px;
+  width: 100%;
+  z-index: 1000000;
 }

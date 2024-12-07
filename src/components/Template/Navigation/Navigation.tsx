@@ -1,4 +1,5 @@
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
 import {
   CubeBack,
   CubeBottom,
@@ -8,12 +9,14 @@ import {
   CubeTop,
 } from "~/components/Atoms/CubeIcons";
 import { NavButton } from "~/components/Atoms/NavButton";
+import ContactModal from "~/components/Molecules/ContactModal/ContactModal";
 
 interface Props {
   handleButtonClick: (side: string) => void;
 }
 
 export const Navigation = ({ handleButtonClick }: Props) => {
+  const [openModal, setOpenModal] = useState(false);
   return (
     <div className="absolute bottom-4 z-50 flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4 px-[20px]">
       <NavButton
@@ -61,10 +64,12 @@ export const Navigation = ({ handleButtonClick }: Props) => {
       <NavButton
         label="Contact"
         className="h-full w-full"
+        onClick={() => setOpenModal(true)}
         icon={
           <EnvelopeIcon className="duration-duration-200 h-[16px] w-[16px] stroke-black transition-all group-hover:stroke-white lg:h-[24px] lg:w-[24px]" />
         }
       />
+      <ContactModal open={openModal} setOpen={setOpenModal} />
     </div>
   );
 };

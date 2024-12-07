@@ -10,6 +10,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.1.5",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tailwindcss/container-queries": "^0.1.1",
@@ -20,6 +21,8 @@
     "react-animated-cursor": "^2.11.2",
     "react-dom": "^18.3.1",
     "react-photo-album": "^3.0.2",
+    "react-responsive-carousel": "^3.2.23",
+    "react-svg-worldmap": "^2.0.0-alpha.16",
     "zod": "^3.23.3"
   },
   "devDependencies": {
