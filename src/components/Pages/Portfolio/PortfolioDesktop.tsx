@@ -21,7 +21,7 @@ export const PortfolioDesktop = ({ showContent }: Props) => {
         "fade-in": showContent,
         "fade-out": !showContent,
       })}
-      style={{ zIndex: 48 }}
+      style={{ zIndex: showContent ? 48 : 0 }}
     >
       <div className="flex h-full flex-col items-center justify-between px-[36px] text-center">
         <div className="flex w-full flex-row items-start justify-between gap-7 pt-[75px]">

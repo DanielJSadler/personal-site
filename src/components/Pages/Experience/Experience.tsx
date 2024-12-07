@@ -5,9 +5,10 @@ interface Props {
   text: string;
   header: string;
   showContent: boolean;
+  children?: React.ReactNode;
 }
 
-export const Experience = ({ header, text, showContent }: Props) => {
+export const Experience = ({ header, text, showContent, children }: Props) => {
   return (
     <div
       className={clsx("z-50 h-full w-full bg-white/35 duration-1000", {
@@ -24,6 +25,7 @@ export const Experience = ({ header, text, showContent }: Props) => {
           <h2 className="text-center text-sm text-black md:text-left md:text-xl">
             {text}
           </h2>
+          {children}
         </div>
       </section>
     </div>

@@ -43,11 +43,13 @@ export const LandingPage = ({
           outerSize={100}
           color="255, 255, 255"
           trailingSpeed={1}
-          outerScale={2}
+          outerScale={loading ? 2 : 1}
           outerAlpha={1}
           outerStyle={{
             mixBlendMode: "exclusion",
+            cursor: "none",
           }}
+          clickables={[{ target: ".landing-page" }]}
         >
           <LoadingText loading={loading} />
         </AnimatedCursor>

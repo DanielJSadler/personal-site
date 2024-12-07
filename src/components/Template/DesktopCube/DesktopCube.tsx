@@ -127,7 +127,7 @@ const DesktopCube = forwardRef<DesktopCubeRef, DesktopCubeProps>(
               <Homepage showContent={showContent} />
             </div>
             <div className="cube__face cube__face--back h-full w-full">
-              <Pictures showContent={showContent} />
+              <Pictures showContent={currentClass === "show-back"} />
             </div>
             <div className="cube__face cube__face--right z-50 flex items-center justify-center @container">
               <SkillsPage showContent={showContent} />
@@ -139,7 +139,7 @@ const DesktopCube = forwardRef<DesktopCubeRef, DesktopCubeProps>(
               <Experience
                 showContent={showContent}
                 header="More about me"
-                text="When I'm not coding, you'll often find me out running, having completed my first half marathon in 2024! I also completed a sprint triathlon in summer 2023. I enjoy specialty coffee, craft beer, and have a background in coffee roasting and barista work. I also love to travel and am hoping to do 30 countries before I am 30."
+                text="When I'm not coding, you'll often find me out running, having completed my first half marathon in 2024! I also completed a sprint triathlon in summer 2023. I enjoy specialty coffee, craft beer, and have a background in coffee roasting and baristaring. I also love to travel and am hoping to do 30 countries before I am 30."
               />
             </div>
             <div className="cube__face cube__face--bottom flex items-center justify-center @container/experience">
