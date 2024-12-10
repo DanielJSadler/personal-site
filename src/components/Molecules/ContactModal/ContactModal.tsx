@@ -16,7 +16,7 @@ interface Props {
 
 export default function ContactModal({ open, setOpen }: Readonly<Props>) {
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-10">
+    <Dialog open={open} onClose={setOpen} className="relative z-10 cursor-auto">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -39,10 +39,10 @@ export default function ContactModal({ open, setOpen }: Readonly<Props>) {
               </button>
             </div>
             <div className="sm:flex sm:items-start">
-              <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:size-10">
+              <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-gray-100 sm:mx-0 sm:size-10">
                 <EnvelopeIcon
                   aria-hidden="true"
-                  className="size-6 text-blue-500"
+                  className="size-6 text-black"
                 />
               </div>
               <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
@@ -58,7 +58,7 @@ export default function ContactModal({ open, setOpen }: Readonly<Props>) {
                   </p>
                   <a
                     href="mailto:daniel.sadler123@gmail.com"
-                    className="text-sm text-gray-500"
+                    className="text-sm font-semibold text-gray-900"
                   >
                     daniel.sadler123@gmail.com
                   </a>
