@@ -13,10 +13,10 @@ export const NavButton = ({ label, icon, ...props }: Props) => {
   return (
     <button
       {...props}
-      className="group flex flex-row items-center space-x-2 rounded-xl bg-white p-2 transition-all duration-200 hover:cursor-pointer hover:bg-black"
+      className="spaxe-x-0 group flex flex-row items-center rounded-xl bg-white p-2 transition-all duration-200 hover:cursor-pointer hover:bg-black sm:space-x-2"
     >
       {icon}
-      <span className="font-helvetica text-[10px] font-medium text-black transition-all duration-200 group-hover:text-white lg:text-xs">
+      <span className="text-[10px] font-medium text-black transition-all duration-200 group-hover:text-white lg:text-xs">
         {label.toUpperCase()}
       </span>
     </button>

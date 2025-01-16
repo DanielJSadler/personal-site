@@ -29,6 +29,7 @@ export const PortfolioDesktop = ({ showContent }: Props) => {
             <PortfolioCard
               {...project}
               key={project.name}
+              clickable={showContent}
               className={getImageSizes(index)}
             />
           ))}
@@ -39,6 +40,7 @@ export const PortfolioDesktop = ({ showContent }: Props) => {
             <PortfolioCard
               {...project}
               key={project.name}
+              clickable={showContent}
               className={getImageSizes(index)}
             />
           ))}

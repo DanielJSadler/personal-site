@@ -18,18 +18,18 @@ interface Props {
 export const Navigation = ({ handleButtonClick }: Props) => {
   const [openModal, setOpenModal] = useState(false);
   return (
-    <div className="absolute bottom-4 z-50 flex flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4 px-[20px]">
+    <div className="absolute bottom-4 z-50 flex w-full flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4 px-[20px]">
       <NavButton
         label="Home"
         icon={
-          <CubeFront className="h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white lg:h-[24px] lg:w-[24px]" />
+          <CubeFront className="hidden h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white sm:block lg:h-[24px] lg:w-[24px]" />
         }
         onClick={() => handleButtonClick("front")}
       />
       <NavButton
         label="About"
         icon={
-          <CubeBottom className="h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white lg:h-[24px] lg:w-[24px]" />
+          <CubeBottom className="hidden h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white sm:block lg:h-[24px] lg:w-[24px]" />
         }
         onClick={() => handleButtonClick("bottom")}
       />
@@ -37,28 +37,28 @@ export const Navigation = ({ handleButtonClick }: Props) => {
         label="Skills"
         onClick={() => handleButtonClick("right")}
         icon={
-          <CubeRight className="h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white lg:h-[24px] lg:w-[24px]" />
+          <CubeRight className="hidden h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white sm:block lg:h-[24px] lg:w-[24px]" />
         }
       />
       <NavButton
         label="Bio"
         onClick={() => handleButtonClick("top")}
         icon={
-          <CubeTop className="h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white lg:h-[24px] lg:w-[24px]" />
+          <CubeTop className="hidden h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white sm:block lg:h-[24px] lg:w-[24px]" />
         }
       />
       <NavButton
         label="Portfolio"
         onClick={() => handleButtonClick("left")}
         icon={
-          <CubeLeft className="h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white lg:h-[24px] lg:w-[24px]" />
+          <CubeLeft className="hidden h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white sm:block lg:h-[24px] lg:w-[24px]" />
         }
       />
       <NavButton
         label="Pictures"
         onClick={() => handleButtonClick("back")}
         icon={
-          <CubeBack className="h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white lg:h-[24px] lg:w-[24px]" />
+          <CubeBack className="hidden h-[16px] w-[16px] fill-black/50 stroke-black transition-all duration-100 group-hover:fill-white/80 group-hover:stroke-white sm:block lg:h-[24px] lg:w-[24px]" />
         }
       />
       <NavButton
@@ -66,7 +66,7 @@ export const Navigation = ({ handleButtonClick }: Props) => {
         className="h-full w-full"
         onClick={() => setOpenModal(true)}
         icon={
-          <EnvelopeIcon className="duration-duration-200 h-[16px] w-[16px] stroke-black transition-all group-hover:stroke-white lg:h-[24px] lg:w-[24px]" />
+          <EnvelopeIcon className="duration-duration-200 hidden h-[16px] w-[16px] stroke-black transition-all group-hover:stroke-white sm:block lg:h-[24px] lg:w-[24px]" />
         }
       />
       <ContactModal open={openModal} setOpen={setOpenModal} />

@@ -19,7 +19,7 @@ export const Experience = ({ header, text, showContent, children }: Props) => {
       <section className="experience-container flex h-full w-full flex-col items-center justify-around space-y-8 px-8 pb-[200px] md:pb-0">
         <MobileDanielSadlerSvg className="flex md:hidden" />
         <div className="space-y-4">
-          <h1 className="text-center font-helvetica text-xl text-black md:text-left md:text-3xl">
+          <h1 className="text-center text-xl text-black md:text-left md:text-3xl">
             {header.toUpperCase()}
           </h1>
           <h2 className="text-center text-sm text-black md:text-left md:text-xl">

@@ -18,9 +18,9 @@ const AnimatedCursor = dynamic(() => import("react-animated-cursor"), {
 const LoadingText = ({ loading }: { loading: boolean }) => (
   <div>
     {loading ? (
-      <p className="font-helvetica text-base font-medium text-black">LOADING</p>
+      <p className="text-base font-medium text-black">LOADING</p>
     ) : (
-      <p className="font-helvetica text-base font-medium text-black">ENTER</p>
+      <p className="text-base font-medium text-black">ENTER</p>
     )}
   </div>
 );

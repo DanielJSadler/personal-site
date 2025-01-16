@@ -8,6 +8,7 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { EnvelopeIcon } from "@heroicons/react/20/solid";
+import { GithubSvg } from "~/components/Atoms/GithubSvg";
 
 interface Props {
   open: boolean;
@@ -16,14 +17,18 @@ interface Props {
 
 export default function ContactModal({ open, setOpen }: Readonly<Props>) {
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-10 cursor-auto">
+    <Dialog
+      open={open}
+      onClose={setOpen}
+      className="relative z-[10000] cursor-auto"
+    >
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
       />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
           <DialogPanel
             transition
             className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
@@ -45,7 +50,7 @@ export default function ContactModal({ open, setOpen }: Readonly<Props>) {
                   className="size-6 text-black"
                 />
               </div>
-              <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+              <div className="mt-3 flex flex-col items-center justify-center text-center sm:ml-4 sm:mt-0 sm:items-start sm:text-left">
                 <DialogTitle
                   as="h3"
                   className="text-base font-semibold text-gray-900"
@@ -61,6 +66,22 @@ export default function ContactModal({ open, setOpen }: Readonly<Props>) {
                     className="text-sm font-semibold text-gray-900"
                   >
                     daniel.sadler123@gmail.com
+                  </a>
+                </div>
+                <div className="flex w-1/2 flex-col items-center justify-center gap-2 pt-2 sm:w-full sm:flex-row">
+                  <a
+                    href="https://github.com/DanielJSadler"
+                    className="flex w-full flex-row items-center justify-start gap-1 text-sm font-semibold text-gray-900"
+                  >
+                    <GithubSvg />
+                    Personal Github
+                  </a>
+                  <a
+                    href="https://github.com/DanielSadler"
+                    className="flex w-full flex-row items-center justify-start gap-1 text-sm font-semibold text-gray-900"
+                  >
+                    <GithubSvg />
+                    Work Github
                   </a>
                 </div>
               </div>

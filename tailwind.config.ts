@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        helvetica: ["var(--font-helvetica-neue)", ...fontFamily.sans],
+        mono: ["var(--font-mono)", "monospace"],
       },
 
       colors: {

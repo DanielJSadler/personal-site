@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import React from "react";
+import localFont from "next/font/local";
 
 export const metadata: Metadata = {
   title: "Daniel Sadler",
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 };
 
 const mono = Roboto_Mono({ subsets: ["latin"] });
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

@@ -15,6 +15,7 @@ export const Portfolio = ({ showContent }: Props) => {
       return `h-[100px] xl:w-[250px] xl:h-[125px] w-[200px]`;
     }
   };
+  console.log(showContent);
   return (
     <div
       className={clsx("h-screen w-full bg-white/35 duration-1000 md:h-full", {
@@ -23,14 +24,14 @@ export const Portfolio = ({ showContent }: Props) => {
       })}
     >
       <div className="flex h-full flex-col items-center px-[36px] text-center md:justify-center">
-        <p className="pt-4 font-helvetica text-sm uppercase text-black md:text-2xl">
-          {`Having worked on  over 9 projects so far, here are a few I can
-            show off!`}
+        <p className="pt-4 text-sm uppercase text-black md:text-2xl">
+          {`Here are a few of the projects I have worked on so far!`}
         </p>
         <div className="flex w-full flex-row items-start justify-center gap-7 pt-[75px] md:hidden">
           {projects.slice(0, 2).map((project, index) => (
             <PortfolioCard
               {...project}
+              clickable={showContent}
               key={project.name}
               className={getImageSizes(index)}
             />
@@ -40,6 +41,7 @@ export const Portfolio = ({ showContent }: Props) => {
           {projects.slice(2, 4).map((project, index) => (
             <PortfolioCard
               {...project}
+              clickable={showContent}
               key={project.name}
               className={getImageSizes(index)}
             />

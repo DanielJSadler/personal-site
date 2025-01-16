@@ -29,19 +29,43 @@ interface Props {
   showContent: boolean;
 }
 
-const LeftArrow = ({ onClick }: { onClick: () => void }) => (
+const LeftArrow = ({
+  onClick,
+  showContent,
+}: {
+  onClick: () => void;
+  showContent: boolean;
+}) => (
   <button
     onClick={onClick}
-    className="absolute left-4 top-1/2 z-[1000] rounded-lg bg-white p-2 shadow-md focus:outline-none lg:-left-10"
+    className={clsx(
+      "absolute left-4 top-1/2 rounded-lg bg-white p-2 shadow-md focus:outline-none lg:-left-10",
+      {
+        "fade-in z-[1000]": showContent,
+        "fade-out": !showContent,
+      },
+    )}
   >
     <ArrowLeftIcon height={16} width={16} fill="black" />
   </button>
 );
 
-const RightArrow = ({ onClick }: { onClick: () => void }) => (
+const RightArrow = ({
+  onClick,
+  showContent,
+}: {
+  onClick: () => void;
+  showContent: boolean;
+}) => (
   <button
     onClick={onClick}
-    className="absolute right-4 top-1/2 z-[1000] rounded-lg bg-white p-2 shadow-md focus:outline-none lg:-right-10"
+    className={clsx(
+      "absolute right-4 top-1/2 rounded-lg bg-white p-2 shadow-md focus:outline-none lg:-right-10",
+      {
+        "fade-in z-[1000]": showContent,
+        "fade-out": !showContent,
+      },
+    )}
   >
     <ArrowRightIcon height={16} width={16} fill="black" />
   </button>
@@ -128,11 +152,19 @@ export const Pictures = ({ showContent }: Props) => {
           ))}
         </div>
       </div>
-      <div className="absolute top-2 z-50 flex w-screen items-center justify-center lg:-top-12 lg:w-full">
-        <p className="items-center rounded-lg bg-white px-2 py-1 text-center font-helvetica text-xl text-black/60 shadow-md lg:bg-none">{`${currentIndex + 1} / ${photos.length}`}</p>
+      <div
+        className={clsx(
+          "absolute top-2 flex w-screen items-center justify-center lg:-top-12 lg:w-full",
+          {
+            "fade-in": showContent,
+            "fade-out": !showContent,
+          },
+        )}
+      >
+        <p className="items-center rounded-lg bg-white px-2 py-1 text-center text-xl text-black/60 shadow-md lg:bg-none">{`${currentIndex + 1} / ${photos.length}`}</p>
       </div>
-      <LeftArrow onClick={handlePrev} />
-      <RightArrow onClick={handleNext} />
+      <LeftArrow onClick={handlePrev} showContent={showContent} />
+      <RightArrow onClick={handleNext} showContent={showContent} />
     </>
   );
 };

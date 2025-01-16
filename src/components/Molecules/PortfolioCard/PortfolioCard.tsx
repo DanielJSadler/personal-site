@@ -9,6 +9,7 @@ interface Props {
   className?: string;
   imageHeight?: number;
   imageWidth?: number;
+  clickable: boolean;
 }
 
 export const PortfolioCard = ({
@@ -18,6 +19,7 @@ export const PortfolioCard = ({
   className,
   imageHeight = 500,
   imageWidth = 500,
+  clickable,
 }: Props) => {
   return (
     <a
@@ -25,6 +27,7 @@ export const PortfolioCard = ({
       className={clsx(
         `group/card flex flex-col items-start space-y-4 lg:items-center`,
         className,
+        clickable ? `pointer-events-auto` : `pointer-events-none`,
       )}
       referrerPolicy="no-referrer"
       target="_blank"
@@ -37,9 +40,7 @@ export const PortfolioCard = ({
         className="aspect-square h-full w-full rounded-lg object-cover object-left"
       />
       <div className="flex w-full max-w-[500px] flex-row items-center justify-between">
-        <p className="font-helvetica text-xs text-black lg:text-base">
-          {name.toUpperCase()}
-        </p>
+        <p className="text-xs text-black lg:text-base">{name.toUpperCase()}</p>
         <ArrowRightIcon
           height={20}
           color="black"
