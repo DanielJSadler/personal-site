@@ -19,7 +19,6 @@ const Page = () => {
     setLoading(true);
     await cubeRef.current?.rotateCube();
     setTimeout(() => {
-      console.log("Setting visible to false");
       setVisible(false);
       setLoading(false);
     }, 1000);

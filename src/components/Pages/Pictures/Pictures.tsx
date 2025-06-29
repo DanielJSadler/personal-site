@@ -18,9 +18,9 @@ const photos = [
   { src: "/photos/IMG_2364.webp", width: 3024, height: 4032 },
   { src: "/photos/IMG_2437.webp", width: 3024, height: 4032 },
   { src: "/photos/IMG_2954.JPG", width: 2744, height: 3662 },
-  { src: "/photos/IMG_1701.JPG", width: 3024, height: 4032 },
-  { src: "/photos/IMG_2483.JPG", width: 3024, height: 4032 },
-  { src: "/photos/IMG_0842.JPG", width: 3024, height: 4032 },
+  { src: "/photos/IMG_1701.jpg", width: 3024, height: 4032 },
+  { src: "/photos/IMG_2483.jpg", width: 3024, height: 4032 },
+  { src: "/photos/IMG_0842.jpg", width: 3024, height: 4032 },
   { src: "/photos/IMG_2172.JPG", width: 1536, height: 2048 },
   { src: "/photos/IMG_2179.JPG", width: 1536, height: 2048 },
 ];
@@ -99,13 +99,10 @@ export const Pictures = ({ showContent }: Props) => {
   };
 
   useEffect(() => {
-    // Set initial dimensions
     updateDimensions();
 
-    // Add event listener for window resize
     window.addEventListener("resize", updateDimensions);
 
-    // Clean up event listener on unmount
     return () => {
       window.removeEventListener("resize", updateDimensions);
     };

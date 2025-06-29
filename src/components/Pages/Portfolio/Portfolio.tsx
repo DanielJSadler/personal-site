@@ -15,7 +15,7 @@ export const Portfolio = ({ showContent }: Props) => {
       return `h-[100px] xl:w-[250px] xl:h-[125px] w-[200px]`;
     }
   };
-  console.log(showContent);
+
   return (
     <div
       className={clsx("h-screen w-full bg-white/35 duration-1000 md:h-full", {

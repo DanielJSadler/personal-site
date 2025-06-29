@@ -16,7 +16,6 @@ export const Gradients = ({ currentClass }: Props) => {
         )}
       />
 
-      {/* Right Gradient */}
       <div
         className={clsx(
           `absolute h-full w-full rounded-full bg-gradient-to-b from-[#00C2FF] to-[#FF29C3] blur-3xl transition-opacity duration-[3000ms] md:h-2/3 md:w-2/3 md:duration-[1500ms]`,
@@ -27,7 +26,6 @@ export const Gradients = ({ currentClass }: Props) => {
         )}
       />
 
-      {/* Back Gradient */}
       <div
         className={clsx(
           `absolute h-full w-full rounded-full bg-gradient-to-b from-[#FF29C3] to-[#FFD700] blur-3xl transition-opacity duration-[3000ms] md:h-2/3 md:w-2/3 md:duration-[1500ms]`,
@@ -38,7 +36,6 @@ export const Gradients = ({ currentClass }: Props) => {
         )}
       />
 
-      {/* Left Gradient */}
       <div
         className={clsx(
           `absolute h-full w-full rounded-full bg-gradient-to-b from-[#FFD700] to-[#4CAF50] blur-3xl transition-opacity duration-[3000ms] md:h-2/3 md:w-2/3 md:duration-[1500ms]`,
@@ -49,7 +46,6 @@ export const Gradients = ({ currentClass }: Props) => {
         )}
       />
 
-      {/* Top Gradient */}
       <div
         className={clsx(
           `absolute h-full w-full rounded-full bg-gradient-to-b from-[#4CAF50] to-[#FF5733] blur-3xl transition-opacity duration-[3000ms] md:h-2/3 md:w-2/3 md:duration-[1500ms]`,
@@ -60,7 +56,6 @@ export const Gradients = ({ currentClass }: Props) => {
         )}
       />
 
-      {/* Bottom Gradient */}
       <div
         className={clsx(
           `absolute h-full w-full rounded-full bg-gradient-to-b from-[#FF5733] to-[#00C2FF] blur-3xl transition-opacity duration-[3000ms] md:h-2/3 md:w-2/3 md:duration-[1500ms]`,

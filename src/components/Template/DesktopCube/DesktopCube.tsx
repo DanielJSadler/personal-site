@@ -114,7 +114,6 @@ const DesktopCube = forwardRef<DesktopCubeRef, DesktopCubeProps>(
             "scene-fullscreen": isFullScreen,
           })}
         >
-          {/* Front Gradient */}
           <Gradients currentClass={currentClass} />
           <div
             className={clsx(

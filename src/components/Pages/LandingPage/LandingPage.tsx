@@ -35,7 +35,7 @@ export const LandingPage = ({
     <section
       onClick={onClick}
       style={{ zIndex: 1000 }}
-      className={`landing-page absolute flex h-screen w-screen flex-col items-center justify-center bg-black ${visible ? `flex` : `hidden`}`}
+      className={`landing-page absolute z-[1000] flex h-screen w-screen flex-col items-center justify-center bg-black ${visible ? `flex` : `hidden`}`}
     >
       {visible && (
         <AnimatedCursor
