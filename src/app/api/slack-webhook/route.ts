@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
       console.log(`🔴 Keyword detected in status: '${statusText}'`);
       try {
         await fetch(
-          "https://maker.ifttt.com/trigger/slack_in_meeting/with/key/jW1-9NGX47qrW3DyeE6IWKLlXrbyzdiSbCMB1qo7dhI",
+          `${process.env.WEBHOOK_BASE_URL}${process.env.HA_SLACK_IN_MEETING_WEBHOOK_ID}`,
           {
             method: "POST",
             headers,
@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
       console.log(`✅ No keywords found in status: '${statusText}'`);
       try {
         await fetch(
-          "https://maker.ifttt.com/trigger/slack_left_meeting/json/with/key/jW1-9NGX47qrW3DyeE6IWKLlXrbyzdiSbCMB1qo7dhI",
+          `${process.env.WEBHOOK_BASE_URL}${process.env.HA_SLACK_LEFT_MEETING_WEBHOOK_ID}`,
           {
             method: "POST",
             headers,
