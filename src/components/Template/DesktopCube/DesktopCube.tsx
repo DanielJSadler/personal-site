@@ -108,7 +108,6 @@ const DesktopCube = forwardRef<DesktopCubeRef, DesktopCubeProps>(
           },
         )}
       >
-        <PortfolioDesktop showContent={currentClass === "show-left"} />
         <div
           className={clsx("scene flex items-center justify-center", {
             "scene-fullscreen": isFullScreen,
@@ -132,7 +131,7 @@ const DesktopCube = forwardRef<DesktopCubeRef, DesktopCubeProps>(
               <SkillsPage showContent={showContent} />
             </div>
             <div className="cube__face cube__face--left @container">
-              <Portfolio showContent={showContent} />
+              <PortfolioDesktop showContent={currentClass === "show-left"} />
             </div>
             <div className="cube__face cube__face--top bg-gradient-to-t @container/experience">
               <Experience
@@ -150,7 +149,10 @@ const DesktopCube = forwardRef<DesktopCubeRef, DesktopCubeProps>(
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 flex w-full items-center justify-center">
+        <div className="absolute hidden w-full items-center lg:left-4 lg:flex lg:justify-start">
+          <Navigation handleButtonClick={handleButtonClick} />
+        </div>
+        <div className="absolute bottom-16 flex w-full items-center justify-center lg:hidden">
           <Navigation handleButtonClick={handleButtonClick} />
         </div>
       </main>
