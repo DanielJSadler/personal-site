@@ -20,7 +20,7 @@ export const Mobile = ({ currentClass, setCurrentClass }: Props) => {
   };
   return (
     <div className="flex h-full w-full items-center justify-center md:hidden">
-      <div className="z-[500] w-full">
+      <div className="absolute bottom-16 z-[10000] flex w-full items-center justify-center">
         <Navigation handleButtonClick={handleButtonClick} />
       </div>
       <Gradients currentClass={currentClass} />

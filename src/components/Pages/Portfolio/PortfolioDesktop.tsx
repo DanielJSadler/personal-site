@@ -17,7 +17,7 @@ export const PortfolioDesktop = ({ showContent }: Props) => {
   };
   return (
     <div
-      className={clsx("absolute h-screen w-screen duration-1000", {
+      className={clsx("h-full w-full bg-white/35 p-32 duration-1000 lg:p-24", {
         "fade-in": showContent,
         "fade-out": !showContent,
       })}

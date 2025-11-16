@@ -1,5 +1,11 @@
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import {
+  type MouseEvent,
+  type TouchEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   CubeBack,
   CubeBottom,
@@ -17,8 +23,9 @@ interface Props {
 
 export const Navigation = ({ handleButtonClick }: Props) => {
   const [openModal, setOpenModal] = useState(false);
+
   return (
-    <div className="absolute bottom-4 z-50 flex w-full flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4 px-[20px]">
+    <div className="absolute z-50 flex w-fit flex-row flex-wrap items-center justify-center gap-x-2 gap-y-4 border-[0.5px] border-white bg-white/10 px-7 py-8 shadow-black drop-shadow-2xl backdrop-blur-sm backdrop-contrast-100 backdrop-saturate-150 lg:flex-col">
       <NavButton
         label="Home"
         icon={
