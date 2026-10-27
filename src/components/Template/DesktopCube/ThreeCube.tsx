@@ -23,6 +23,7 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
   const host = useRef<HTMLDivElement>(null);
   const target = useRef(active);
   const onChange = useRef(onSideChange);
+  const controls = useRef<{ zoom: (factor: number) => void; reset: () => void } | null>(null);
   const [faces, setFaces] = useState<HTMLDivElement[]>([]);
   useEffect(() => { target.current = active; }, [active]);
   useEffect(() => { onChange.current = onSideChange; }, [onSideChange]);
@@ -123,6 +124,34 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
     const viewDirection = new THREE.Vector3();
     const upperColour = new THREE.Color();
     const lowerColour = new THREE.Color();
+    const zoom = (factor: number) => {
+      camera.zoom = THREE.MathUtils.clamp(camera.zoom * factor, 0.6, 1.8);
+      camera.updateProjectionMatrix();
+      container.dataset.zoom = camera.zoom.toFixed(3);
+    };
+    controls.current = { zoom, reset: () => { group.position.set(0, 0, 0); camera.zoom = 1; zoom(1); } };
+    zoom(1);
+    const wheel = (event: WheelEvent) => {
+      // Long sections can still scroll; pinch/Control-wheel always zooms.
+      if (!event.ctrlKey && event.target instanceof Element) {
+        const scrollArea = event.target.closest(".skill-container, .projects-face, .experience-container");
+        if (scrollArea && scrollArea.scrollHeight > scrollArea.clientHeight + 1) return;
+      }
+      event.preventDefault();
+      const pixels = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? container.clientHeight : 1);
+      zoom(Math.exp(-THREE.MathUtils.clamp(pixels, -200, 200) * 0.002));
+    };
+    const touches = new Map<number, { x: number; y: number }>();
+    let gesture: { distance: number; x: number; y: number } | undefined;
+    const touchPair = () => {
+      const [first, second] = [...touches.values()];
+      if (!first || !second) return undefined;
+      return { distance: Math.max(1, Math.hypot(second.x - first.x, second.y - first.y)), x: (first.x + second.x) / 2, y: (first.y + second.y) / 2 };
+    };
+    const pan = (dx: number, dy: number) => {
+      group.position.x = THREE.MathUtils.clamp(group.position.x + dx * 1.4 / camera.zoom, -400, 400);
+      group.position.y = THREE.MathUtils.clamp(group.position.y - dy * 1.4 / camera.zoom, -280, 280);
+    };
     let pointer: { id: number; x: number; y: number; startX: number; startY: number; pan: boolean; moved: boolean } | undefined;
     const nearestSide = () => {
       viewDirection.copy(camera.position).sub(group.position).normalize();
@@ -136,12 +165,31 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
       return best;
     };
     const down = (event: PointerEvent) => {
-      if (event.button !== 0 || pointer || !(event.target instanceof Element)) return;
+      if (![0, 1, 2].includes(event.button) || !(event.target instanceof Element)) return;
       if (event.target.closest("a, button, input, select, textarea, [role=button]")) return;
-      pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, startX: event.clientX, startY: event.clientY, pan: event.shiftKey, moved: false };
+      if (event.pointerType === "touch") {
+        touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+        gesture = touchPair();
+      }
       container.setPointerCapture(event.pointerId);
+      if (pointer) return;
+      pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, startX: event.clientX, startY: event.clientY, pan: event.shiftKey || event.button !== 0, moved: false };
+      if (event.button !== 0) event.preventDefault();
     };
     const move = (event: PointerEvent) => {
+      if (touches.has(event.pointerId)) {
+        touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+        const next = touchPair();
+        if (next && gesture) {
+          zoom(next.distance / gesture.distance);
+          pan(next.x - gesture.x, next.y - gesture.y);
+          gesture = next;
+          if (pointer) pointer.moved = true;
+          container.classList.add("is-dragging");
+          event.preventDefault();
+          return;
+        }
+      }
       if (!pointer || pointer.id !== event.pointerId) return;
       if (!pointer.moved && Math.hypot(event.clientX - pointer.startX, event.clientY - pointer.startY) < 5) return;
       pointer.moved = true;
@@ -150,8 +198,7 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
       const dx = event.clientX - pointer.x;
       const dy = event.clientY - pointer.y;
       if (pointer.pan) {
-        group.position.x = THREE.MathUtils.clamp(group.position.x + dx * 1.4, -280, 280);
-        group.position.y = THREE.MathUtils.clamp(group.position.y - dy * 1.4, -180, 180);
+        pan(dx, dy);
       } else {
         const turn = new THREE.Quaternion().setFromEuler(new THREE.Euler(dy * 0.008, dx * 0.008, 0));
         group.quaternion.premultiply(turn).normalize();
@@ -162,11 +209,14 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
       event.preventDefault();
     };
     const up = (event: PointerEvent) => {
-      if (!pointer || pointer.id !== event.pointerId) return;
+      if (!pointer || (pointer.id !== event.pointerId && !touches.has(event.pointerId))) return;
       const moved = pointer.moved;
+      const captured = new Set([...touches.keys(), pointer.id, event.pointerId]);
       pointer = undefined;
+      touches.clear();
+      gesture = undefined;
       container.classList.remove("is-dragging");
-      if (container.hasPointerCapture(event.pointerId)) container.releasePointerCapture(event.pointerId);
+      for (const id of captured) if (container.hasPointerCapture(id)) container.releasePointerCapture(id);
       if (moved) {
         target.current = nearestSide();
         onChange.current(target.current);
@@ -177,6 +227,9 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
     container.addEventListener("pointerup", up);
     container.addEventListener("pointercancel", up);
     container.addEventListener("lostpointercapture", up);
+    container.addEventListener("wheel", wheel, { passive: false });
+    const contextMenu = (event: Event) => { event.preventDefault(); };
+    container.addEventListener("contextmenu", contextMenu);
     let frame = 0;
     let previous = performance.now();
     const animate = (now: number) => {
@@ -217,6 +270,9 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
       container.removeEventListener("pointerup", up);
       container.removeEventListener("pointercancel", up);
       container.removeEventListener("lostpointercapture", up);
+      container.removeEventListener("wheel", wheel);
+      container.removeEventListener("contextmenu", contextMenu);
+      controls.current = null;
       scene.traverse((object) => {
         if (object instanceof THREE.Mesh) {
           object.geometry.dispose();
@@ -234,6 +290,11 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
   return <div ref={host} className="three-stage" aria-label="Interactive portfolio cube" aria-describedby="cube-instructions">
     <div className="cube-glow-fallback" aria-hidden="true" />
     {faces.map((face, i) => createPortal(children[i], face, sides[i]))}
-    <p id="cube-instructions" className="cube-instructions">Drag to turn · Shift + drag to move</p>
+    <div className="cube-controls" role="group" aria-label="Cube view">
+      <button type="button" aria-label="Zoom out" onClick={() => controls.current?.zoom(1 / 1.15)}>−</button>
+      <button type="button" aria-label="Zoom in" onClick={() => controls.current?.zoom(1.15)}>+</button>
+      <button type="button" onClick={() => controls.current?.reset()}>Reset view</button>
+    </div>
+    <p id="cube-instructions" className="cube-instructions">Drag to turn · Right-drag to pan · Scroll to zoom<br />Touch: two fingers to pan and pinch to zoom</p>
   </div>;
 }

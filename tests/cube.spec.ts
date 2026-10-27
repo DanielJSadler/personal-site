@@ -9,6 +9,7 @@ test("drag rotates the glass cube, selects a face, and Shift-drag moves it", asy
   await expect(page.locator(".landing-page")).toBeHidden();
   const stage = page.locator(".three-stage");
   const face = page.locator('.three-face[data-side="front"]');
+  const initialBox = await face.boundingBox();
   const initialTransform = await face.evaluate(element => element.style.transform);
   const background = await face.evaluate(element => getComputedStyle(element).backgroundColor);
   expect(background).toMatch(/rgba\(255, 255, 255, 0\.09\)/);
@@ -26,6 +27,7 @@ test("drag rotates the glass cube, selects a face, and Shift-drag moves it", asy
   // Navigation regains the canonical readable orientation after free rotation.
   await page.getByRole("button", { name: /^home$/i }).filter({ visible: true }).click();
   await expect(stage).toHaveAttribute("data-active-side", "front");
+
   await expect.poll(() => face.evaluate(element => element.style.transform)).toBe(initialTransform);
   const beforePan = await face.boundingBox();
   await page.keyboard.down("Shift");
@@ -38,6 +40,25 @@ test("drag rotates the glass cube, selects a face, and Shift-drag moves it", asy
   expect(afterPan!.x).toBeGreaterThan(beforePan!.x + 20);
   expect(afterPan!.y).toBeGreaterThan(beforePan!.y + 15);
   await expect(stage).toHaveAttribute("data-active-side", "front");
+
+  const beforeZoom = await face.boundingBox();
+  await page.mouse.move(750, 500);
+  await page.mouse.wheel(0, -180);
+  await expect.poll(async () => (await face.boundingBox())!.width).toBeGreaterThan(beforeZoom!.width * 1.15);
+  await page.getByRole("button", { name: "Reset view", exact: true }).click();
+  await expect(stage).toHaveAttribute("data-zoom", "1.000");
+  await expect.poll(async () => (await face.boundingBox())!.x).toBeCloseTo(initialBox!.x, 0);
+  await page.getByRole("button", { name: "Zoom in", exact: true }).click();
+  await expect(stage).toHaveAttribute("data-zoom", "1.150");
+  await page.getByRole("button", { name: "Zoom out", exact: true }).click();
+  await expect(stage).toHaveAttribute("data-zoom", "1.000");
+
+  const beforeRightPan = await face.boundingBox();
+  await page.mouse.move(750, 500);
+  await page.mouse.down({ button: "right" });
+  await page.mouse.move(810, 540, { steps: 10 });
+  await page.mouse.up({ button: "right" });
+  await expect.poll(async () => (await face.boundingBox())!.x).toBeGreaterThan(beforeRightPan!.x + 20);
 
   // Capturing a drag must also release safely outside the stage.
   await page.mouse.move(750, 500);

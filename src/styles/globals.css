@@ -186,3 +186,7 @@
 .three-stage[data-active-side="left"] { --glow-upper: #ffd700; --glow-lower: #4caf50; }
 .three-stage[data-active-side="top"] { --glow-upper: #4caf50; --glow-lower: #ff5733; }
 .three-stage[data-active-side="bottom"] { --glow-upper: #ff5733; --glow-lower: #00c2ff; }
+.cube-controls { position: absolute; right: 20px; bottom: 72px; display: flex; gap: 6px; z-index: 5; }
+.cube-controls button { min-width: 40px; min-height: 40px; padding: 8px 12px; color: #222; background: #ffffff75; border: 1px solid #ffffffa0; cursor: pointer; font-size: 12px; }
+.cube-controls button:hover { background: #ffffffb0; }
+.cube-instructions { line-height: 1.6; }
