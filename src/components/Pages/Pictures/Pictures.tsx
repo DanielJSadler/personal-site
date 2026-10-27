@@ -3,7 +3,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-const photos = [
+const existingPhotos = [
   { src: "/photos/IMG_0054.webp", width: 3024, height: 4032 },
   { src: "/photos/IMG_0360.JPG", width: 4032, height: 3024 },
   { src: "/photos/IMG_0608.webp", width: 3024, height: 4032 },
@@ -24,6 +24,25 @@ const photos = [
   { src: "/photos/IMG_2172.JPG", width: 1536, height: 2048 },
   { src: "/photos/IMG_2179.JPG", width: 1536, height: 2048 },
 ];
+
+const filmPhotos = [
+  { src: "/photos/19A_0875.jpg", width: 3000, height: 2000, alt: "Riverside buildings with mountains in the distance" },
+  { src: "/photos/24A_0947.jpg", width: 3000, height: 2000, alt: "City skyline illuminated at night" },
+  { src: "/photos/28A_0882.jpg", width: 3000, height: 2000, alt: "Film photograph 3 from Daniel's travel collection" },
+  { src: "/photos/33A_0956.jpg", width: 3000, height: 2000, alt: "Film photograph 4 from Daniel's travel collection" },
+  { src: "/photos/34A_0957.jpg", width: 3000, height: 2000, alt: "Film photograph 5 from Daniel's travel collection" },
+  { src: "/photos/_19_0907.jpg", width: 3000, height: 2000, alt: "Film photograph 6 from Daniel's travel collection" },
+  { src: "/photos/_22_0910.jpg", width: 3000, height: 2000, alt: "Film photograph 7 from Daniel's travel collection" },
+  { src: "/photos/_26_0914.jpg", width: 3000, height: 2000, alt: "Film photograph 8 from Daniel's travel collection" },
+  { src: "/photos/_8A_0867.jpg", width: 3000, height: 2000, alt: "Film photograph 9 from Daniel's travel collection" },
+  { src: "/photos/__4_0892.jpg", width: 3000, height: 2000, alt: "Film photograph 10 from Daniel's travel collection" },
+];
+
+// Weave the new film photographs between the existing pictures.
+const photos = existingPhotos.flatMap((photo, index) => {
+  const filmPhoto = index % 2 === 0 ? filmPhotos[Math.floor(index / 2)] : undefined;
+  return filmPhoto ? [photo, filmPhoto] : [photo];
+});
 
 interface Props {
   showContent: boolean;
@@ -142,10 +161,10 @@ export const Pictures = ({ showContent }: Props) => {
             >
               <Image
                 src={photo.src}
-                alt={`Photo ${photo.src}`}
+                alt={"alt" in photo ? String(photo.alt) : `Travel photograph ${photos.indexOf(photo) + 1} from Daniel's collection`}
                 fill
                 sizes="(max-width: 767px) 100vw, 640px"
-                className="object-cover"
+                className="object-contain"
               />
             </div>
           ))}

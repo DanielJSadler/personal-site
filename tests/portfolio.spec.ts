@@ -24,7 +24,10 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 768, height: 102
       }
     }
     await page.getByRole("button", { name: "Next photo" }).filter({ visible: true }).click();
-    await expect(page.getByText("2 / 19", { exact: true }).filter({ visible: true })).toBeVisible();
+    await expect(page.getByText("2 / 29", { exact: true }).filter({ visible: true })).toBeVisible();
+    const newPhoto = page.getByAltText("Riverside buildings with mountains in the distance").filter({ visible: true });
+    await expect(newPhoto).toBeVisible();
+    await expect.poll(() => newPhoto.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
     await sectionButton(page, "Portfolio").click();
     const projectLinks = page.locator(viewport.width >= 768 ? '.three-face[data-side="left"] .projects-grid a' : '.mobile-content:not([hidden]) .projects-grid a');
     await expect(projectLinks).toHaveCount(4);
