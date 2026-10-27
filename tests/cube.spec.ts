@@ -9,8 +9,9 @@ test("drag rotates the glass cube, selects a face, and Shift-drag moves it", asy
   await expect(page.locator(".landing-page")).toBeHidden();
   const stage = page.locator(".three-stage");
   const face = page.locator('.three-face[data-side="front"]');
+  const cube = page.locator(".three-cube");
   const initialBox = await face.boundingBox();
-  const initialTransform = await face.evaluate(element => element.style.transform);
+  const initialTransform = await cube.evaluate(element => element.style.transform);
   const background = await face.evaluate(element => getComputedStyle(element).backgroundColor);
   expect(background).toMatch(/rgba\(255, 255, 255, 0\.09\)/);
   await expect(stage).toHaveAttribute("data-webgl", "true");
@@ -24,7 +25,7 @@ test("drag rotates the glass cube, selects a face, and Shift-drag moves it", asy
   await page.mouse.down();
   await page.mouse.move(1000, 540, { steps: 20 });
   await expect(stage).toHaveClass(/is-dragging/);
-  await expect.poll(() => face.evaluate(element => element.style.transform)).not.toBe(initialTransform);
+  await expect.poll(() => cube.evaluate(element => element.style.transform)).not.toBe(initialTransform);
   await page.mouse.up();
   await expect(stage).not.toHaveClass(/is-dragging/);
   await expect(stage).toHaveAttribute("data-active-side", "left");
@@ -34,7 +35,9 @@ test("drag rotates the glass cube, selects a face, and Shift-drag moves it", asy
   await page.getByRole("button", { name: /^home$/i }).filter({ visible: true }).click();
   await expect(stage).toHaveAttribute("data-active-side", "front");
 
-  await expect.poll(() => face.evaluate(element => element.style.transform)).toBe(initialTransform);
+  await expect.poll(() => cube.evaluate(element => element.style.transform)).toBe(initialTransform);
+  // Compositor transforms can present one frame after their inline style changes.
+  await expect.poll(async () => (await face.boundingBox())!.x).toBeCloseTo(initialBox!.x, 0);
   const beforePan = await face.boundingBox();
   await page.keyboard.down("Shift");
   await page.mouse.move(750, 500);

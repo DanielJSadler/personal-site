@@ -9,3 +9,4 @@
 [x] - Add right-drag pan, wheel/pinch zoom, two-finger gestures and reset/zoom controls.
 [x] - Keep every cube face rendered during rotation and remove delayed face/photo reveals.
 [x] - Restore the circular Enter/Loading cursor on the intro with click-anywhere entry.
+[x] - Profile and optimise cube performance: on-demand rendering, shared face transform, bounded glow resolution, lean gallery, and one responsive presentation.

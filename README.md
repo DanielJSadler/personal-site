@@ -28,3 +28,5 @@ Browser checks cover all sections at desktop, tablet and two phone widths, cube 
 The portfolio needs no secrets to render. The existing `/api/slack-webhook` endpoint requires `SLACK_SIGNING_SECRET` when used. Keep secrets in `.env.local` or your host's environment settings.
 
 Use `yarn start` after a production build. Each feature from [features.md](./features.md) is committed separately on `feature/modernize-cube-designs`.
+
+Performance notes and the repeatable production benchmark are in [PERFORMANCE.md](./PERFORMANCE.md).

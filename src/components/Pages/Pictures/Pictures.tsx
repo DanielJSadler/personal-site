@@ -94,14 +94,18 @@ const RightArrow = ({
 
 export const Pictures = ({ showContent }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [animate, setAnimate] = useState(true);
+  const nearby = new Set([currentIndex, (currentIndex + 1) % photos.length, (currentIndex + photos.length - 1) % photos.length]);
 
   const handlePrev = () => {
+    setAnimate(currentIndex !== 0);
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? photos.length - 1 : prevIndex - 1,
     );
   };
 
   const handleNext = () => {
+    setAnimate(currentIndex !== photos.length - 1);
     setCurrentIndex((prevIndex) =>
       prevIndex === photos.length - 1 ? 0 : prevIndex + 1,
     );
@@ -123,21 +127,22 @@ return (
           style={{
             transform: `translateX(-${currentIndex * 100}%)`,
             zIndex: 2,
+            transitionProperty: animate ? "transform" : "none",
           }}
         >
-          {photos.map((photo) => (
+          {photos.map((photo, index) => (
             <div
               key={photo.src}
               className="relative h-full w-full shrink-0"
             >
-              <Image
+              {nearby.has(index) && <Image
                 src={photo.src}
-                alt={"alt" in photo ? String(photo.alt) : `Travel photograph ${photos.indexOf(photo) + 1} from Daniel's collection`}
+                alt={"alt" in photo ? String(photo.alt) : `Travel photograph ${index + 1} from Daniel's collection`}
                 fill
-                loading={photos.indexOf(photo) === currentIndex ? "eager" : "lazy"}
+                loading="eager"
                 sizes="(max-width: 767px) 100vw, 640px"
                 className="object-contain"
-              />
+              />}
             </div>
           ))}
         </div>

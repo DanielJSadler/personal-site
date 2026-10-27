@@ -11,8 +11,8 @@ test("intro restores the circular cursor and supports clicking anywhere or keybo
   await page.mouse.move(320, 280);
   const cursor = page.locator(".intro-cursor");
   await expect(cursor).toHaveCSS("opacity", "1");
-  await expect(cursor).toHaveCSS("left", "320px");
-  await expect(cursor).toHaveCSS("top", "280px");
+  await expect.poll(async () => { const box = await cursor.boundingBox(); return box!.x + box!.width / 2; }).toBe(320);
+  await expect.poll(async () => { const box = await cursor.boundingBox(); return box!.y + box!.height / 2; }).toBe(280);
   await expect(cursor).toContainText("Enter");
   await page.mouse.click(320, 280);
   await expect(cursor).toContainText("Loading");

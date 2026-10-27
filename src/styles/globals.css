@@ -190,3 +190,9 @@
 .cube-controls button { min-width: 40px; min-height: 40px; padding: 8px 12px; color: #222; background: #ffffff75; border: 1px solid #ffffffa0; cursor: pointer; font-size: 12px; }
 .cube-controls button:hover { background: #ffffffb0; }
 .cube-instructions { line-height: 1.6; }
+
+/* Move the cube as one compositor layer; its six faces stay painted. */
+.three-cube { width: 640px; height: 640px; transform-style: preserve-3d; will-change: transform; }
+.three-face { position: absolute; inset: 0; }
+/* Large backdrop filters on moving 3D content force expensive re-rasterisation. */
+.three-face [class*="backdrop-"], .section-navigation, .section-navigation button { backdrop-filter: none; }

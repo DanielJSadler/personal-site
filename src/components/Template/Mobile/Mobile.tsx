@@ -14,9 +14,7 @@ interface Props {
 
 export const Mobile = ({ currentClass, setCurrentClass }: Props) => {
   const handleButtonClick = (side: string) => {
-    setTimeout(() => {
-      setCurrentClass(`show-${side}`);
-    }, 200);
+    setCurrentClass(`show-${side}`);
   };
   return (
     <div className="mobile-world relative flex h-full w-full items-center justify-center md:hidden">

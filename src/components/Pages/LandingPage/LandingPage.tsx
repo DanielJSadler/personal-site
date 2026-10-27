@@ -23,9 +23,8 @@ export const LandingPage = ({
   const cursor = useRef<HTMLSpanElement>(null);
   const moveCursor = (event: PointerEvent<HTMLElement>) => {
     if (event.pointerType === "touch" || !cursor.current) return;
-    cursor.current.style.left = `${event.clientX}px`;
-    cursor.current.style.top = `${event.clientY}px`;
-    cursor.current.style.opacity = "1";
+    cursor.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+    if (cursor.current.style.opacity !== "1") cursor.current.style.opacity = "1";
   };
   return (
     <section

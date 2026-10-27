@@ -18,19 +18,33 @@ const glowColors: Record<Side, [string, string]> = {
   top: ["#4CAF50", "#FF5733"], bottom: ["#FF5733", "#00C2FF"],
 };
 
-/** HTML faces share a camera and world coordinates with the WebGL body. */
+/** HTML glass and the WebGL glow share a camera and world coordinates. */
 export function ThreeCube({ active, onSideChange, children }: { active: Side; onSideChange: (side: Side) => void; children: ReactNode[] }) {
   const host = useRef<HTMLDivElement>(null);
   const target = useRef(active);
   const onChange = useRef(onSideChange);
+  const wake = useRef<(() => void) | null>(null);
   const controls = useRef<{ zoom: (factor: number) => void; reset: () => void } | null>(null);
   const [faces, setFaces] = useState<HTMLDivElement[]>([]);
-  useEffect(() => { target.current = active; }, [active]);
+  useEffect(() => { target.current = active; wake.current?.(); }, [active]);
   useEffect(() => { onChange.current = onSideChange; }, [onSideChange]);
 
   useEffect(() => {
     if (!host.current) return;
     const container = host.current;
+    let frame: number | null = null;
+    let hasSize = false;
+    let htmlDirty = true;
+    let glowDirty = true;
+    let disposed = false;
+    let previous = performance.now();
+    function invalidate() {
+      if (!disposed && hasSize && !document.hidden && frame === null) {
+        previous = performance.now();
+        frame = requestAnimationFrame(animate);
+      }
+    }
+    wake.current = invalidate;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, 1, 1, 10000);
     const group = new THREE.Group();
@@ -38,35 +52,34 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
     const html = new CSS3DRenderer();
     html.domElement.className = "three-html";
     container.appendChild(html.domElement);
+    // One composited object moves all six faces; their local transforms never change.
+    const cubeElement = document.createElement("div");
+    cubeElement.className = "three-cube";
+    group.add(new CSS3DObject(cubeElement));
+    const faceTransforms: Record<Side, string> = {
+      front: "rotateY(0deg)", right: "rotateY(90deg)", back: "rotateY(180deg)",
+      left: "rotateY(-90deg)", top: "rotateX(90deg)", bottom: "rotateX(-90deg)",
+    };
     const elements = sides.map((side) => {
       const element = document.createElement("div");
       element.className = "three-face";
       element.dataset.side = side;
       element.style.width = "640px";
       element.style.height = "640px";
-      const object = new CSS3DObject(element);
-      object.rotation.set(...rotations[side]);
-      object.position.set(0, 0, 321).applyEuler(object.rotation);
-      group.add(object);
+      element.style.transform = faceTransforms[side] + " translateZ(321px)";
+      cubeElement.appendChild(element);
       return element;
     });
     setFaces(elements);
 
     let renderer: THREE.WebGLRenderer | undefined;
-    let body: THREE.Mesh | undefined;
-    let floor: THREE.Mesh | undefined;
     let orb: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial> | undefined;
     // HTML remains usable on devices where WebGL is unavailable.
     try {
-      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFShadowMap;
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false, powerPreference: "low-power" });
       renderer.domElement.className = "three-canvas";
       renderer.domElement.setAttribute("aria-hidden", "true");
       container.prepend(renderer.domElement);
-      body = new THREE.Mesh(new THREE.BoxGeometry(640, 640, 640), new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.035, roughness: 0.25, depthWrite: false }));
-      scene.add(body);
       const uniforms = {
         upper: { value: new THREE.Color(glowColors[target.current][0]) },
         lower: { value: new THREE.Color(glowColors[target.current][1]) },
@@ -87,32 +100,23 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
       }));
       orb.renderOrder = 2;
       scene.add(orb);
-      floor = new THREE.Mesh(new THREE.PlaneGeometry(6000, 6000), new THREE.ShadowMaterial({ opacity: 0.04 }));
-      floor.rotation.x = -Math.PI / 2;
-      floor.position.y = -470;
-      floor.receiveShadow = true;
-      scene.add(floor);
-      scene.add(new THREE.HemisphereLight(0xffffff, 0x64748b, 3));
-      const light = new THREE.DirectionalLight(0xffffff, 4);
-      light.position.set(-700, 1400, 1100);
-      light.castShadow = true;
-      light.shadow.camera.left = light.shadow.camera.bottom = -1200;
-      light.shadow.camera.right = light.shadow.camera.top = 1200;
-      light.shadow.camera.far = 5000;
-      light.shadow.mapSize.set(1024, 1024);
-      scene.add(light);
       container.dataset.webgl = "true";
     } catch { /* CSS3D uses the same real perspective camera without WebGL. */ }
 
     const resize = () => {
       const { width, height } = container.getBoundingClientRect();
-      if (!width || !height) return;
+      hasSize = width > 0 && height > 0;
+      if (!hasSize) return;
       camera.aspect = width / height;
       camera.position.set(650, 500, 320 + 490 / (Math.tan(THREE.MathUtils.degToRad(19)) * Math.min(camera.aspect, 1)));
       camera.lookAt(0, 0, 0);
       camera.updateProjectionMatrix();
       html.setSize(width, height);
+      // The canvas only draws a diffuse glow. Text and glass remain full-resolution DOM.
+      renderer?.setPixelRatio(Math.min(window.devicePixelRatio, 1.25, Math.sqrt(1_500_000 / (width * height))));
       renderer?.setSize(width, height);
+      htmlDirty = glowDirty = true;
+      invalidate();
     };
     const observer = new ResizeObserver(resize);
     observer.observe(container);
@@ -128,6 +132,8 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
       camera.zoom = THREE.MathUtils.clamp(camera.zoom * factor, 0.6, 1.8);
       camera.updateProjectionMatrix();
       container.dataset.zoom = camera.zoom.toFixed(3);
+      htmlDirty = glowDirty = true;
+      invalidate();
     };
     controls.current = { zoom, reset: () => { group.position.set(0, 0, 0); camera.zoom = 1; zoom(1); } };
     zoom(1);
@@ -151,7 +157,11 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
     const pan = (dx: number, dy: number) => {
       group.position.x = THREE.MathUtils.clamp(group.position.x + dx * 1.4 / camera.zoom, -400, 400);
       group.position.y = THREE.MathUtils.clamp(group.position.y - dy * 1.4 / camera.zoom, -280, 280);
+      htmlDirty = glowDirty = true;
+      invalidate();
     };
+    const turn = new THREE.Quaternion();
+    const turnEuler = new THREE.Euler();
     let pointer: { id: number; x: number; y: number; startX: number; startY: number; pan: boolean; moved: boolean } | undefined;
     const nearestSide = () => {
       viewDirection.copy(camera.position).sub(group.position).normalize();
@@ -200,9 +210,11 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
       if (pointer.pan) {
         pan(dx, dy);
       } else {
-        const turn = new THREE.Quaternion().setFromEuler(new THREE.Euler(dy * 0.008, dx * 0.008, 0));
+        turn.setFromEuler(turnEuler.set(dy * 0.008, dx * 0.008, 0));
         group.quaternion.premultiply(turn).normalize();
         target.current = nearestSide();
+        htmlDirty = true;
+        invalidate();
       }
       pointer.x = event.clientX;
       pointer.y = event.clientY;
@@ -221,6 +233,7 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
         target.current = nearestSide();
         onChange.current(target.current);
       }
+      invalidate();
     };
     container.addEventListener("pointerdown", down);
     container.addEventListener("pointermove", move);
@@ -230,41 +243,73 @@ export function ThreeCube({ active, onSideChange, children }: { active: Side; on
     container.addEventListener("wheel", wheel, { passive: false });
     const contextMenu = (event: Event) => { event.preventDefault(); };
     container.addEventListener("contextmenu", contextMenu);
-    let frame = 0;
-    let previous = performance.now();
-    const animate = (now: number) => {
-      const delta = Math.min((now - previous) / 1000, 0.1);
+    let renderedSide: Side | undefined;
+    const colourSettled = (a: THREE.Color, b: THREE.Color) => Math.max(Math.abs(a.r - b.r), Math.abs(a.g - b.g), Math.abs(a.b - b.b)) < 0.0005;
+    function animate(now: number) {
+      frame = null;
+      if (disposed || !hasSize || document.hidden) return;
+      const delta = Math.min(Math.max((now - previous) / 1000, 1 / 120), 0.05);
       previous = now;
+      let settling = false;
       euler.set(...rotations[target.current]);
       desired.setFromEuler(euler).invert();
-      if (!pointer?.moved) group.quaternion.slerp(desired, reducedMotion.matches ? 1 : 1 - Math.exp(-7 * delta));
-      body?.quaternion.copy(group.quaternion);
-      body?.position.copy(group.position);
-      container.dataset.activeSide = target.current;
+      if (!pointer?.moved && group.quaternion.angleTo(desired) > 0.00001) {
+        group.quaternion.slerp(desired, reducedMotion.matches ? 1 : 1 - Math.exp(-9 * delta));
+        if (group.quaternion.angleTo(desired) < 0.00001) group.quaternion.copy(desired);
+        else settling = true;
+        htmlDirty = true;
+      }
+      if (renderedSide !== target.current) {
+        renderedSide = target.current;
+        container.dataset.activeSide = renderedSide;
+        elements.forEach((element, index) => {
+          const selected = sides[index] === renderedSide;
+          element.inert = !selected;
+          element.setAttribute("aria-hidden", String(!selected));
+          element.style.pointerEvents = selected ? "auto" : "none";
+        });
+      }
       if (orb) {
-        orb.position.copy(group.position);
-        orb.quaternion.copy(camera.quaternion);
         upperColour.set(glowColors[target.current][0]);
         lowerColour.set(glowColors[target.current][1]);
         const uniforms = orb.material.uniforms as { upper: { value: THREE.Color }; lower: { value: THREE.Color } };
-        const blend = reducedMotion.matches ? 1 : 1 - Math.exp(-3 * delta);
-        uniforms.upper.value.lerp(upperColour, blend);
-        uniforms.lower.value.lerp(lowerColour, blend);
+        if (!colourSettled(uniforms.upper.value, upperColour) || !colourSettled(uniforms.lower.value, lowerColour)) {
+          const blend = reducedMotion.matches ? 1 : 1 - Math.exp(-5 * delta);
+          uniforms.upper.value.lerp(upperColour, blend);
+          uniforms.lower.value.lerp(lowerColour, blend);
+          if (colourSettled(uniforms.upper.value, upperColour) && colourSettled(uniforms.lower.value, lowerColour)) {
+            uniforms.upper.value.copy(upperColour);
+            uniforms.lower.value.copy(lowerColour);
+          } else settling = true;
+          glowDirty = true;
+        }
+        if (glowDirty) {
+          orb.position.copy(group.position);
+          orb.quaternion.copy(camera.quaternion);
+          renderer?.render(scene, camera);
+          glowDirty = false;
+        }
       }
-      elements.forEach((element, index) => {
-        const selected = sides[index] === target.current;
-        element.inert = !selected;
-        element.setAttribute("aria-hidden", String(!selected));
-        element.style.pointerEvents = selected ? "auto" : "none";
-      });
-      renderer?.render(scene, camera);
-      html.render(scene, camera);
-      frame = requestAnimationFrame(animate);
+      if (htmlDirty) {
+        html.render(scene, camera);
+        htmlDirty = false;
+      }
+      if (settling) frame = requestAnimationFrame(animate);
+    }
+    const visibility = () => {
+      if (document.hidden) {
+        if (frame !== null) cancelAnimationFrame(frame);
+        frame = null;
+      } else { htmlDirty = glowDirty = true; invalidate(); }
     };
-    frame = requestAnimationFrame(animate);
+    document.addEventListener("visibilitychange", visibility);
+    invalidate();
     return () => {
-      cancelAnimationFrame(frame);
+      disposed = true;
+      if (frame !== null) cancelAnimationFrame(frame);
       observer.disconnect();
+      document.removeEventListener("visibilitychange", visibility);
+      wake.current = null;
       container.removeEventListener("pointerdown", down);
       container.removeEventListener("pointermove", move);
       container.removeEventListener("pointerup", up);

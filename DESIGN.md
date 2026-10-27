@@ -4,9 +4,9 @@ Keep Daniel's signature SVG, Roboto Mono typography, grey background and translu
 
 ## Glass and glow
 
-Three.js owns camera projection and quaternion rotation. HTML content is placed with CSS3DRenderer at the six faces of a transparent WebGL box, retaining semantic content, links and selectable text. The HTML surfaces use a light white tint and a fine glass edge. All six faces stay mounted and painted while rotating. CSS backface culling hides their reverse surfaces without gating content on the selected face. Only the selected face accepts keyboard focus and interaction. Desktop content does not fade in on face changes; the current photograph and project images are loaded eagerly.
+Three.js owns camera projection and quaternion rotation. One CSS3DRenderer object carries six fixed HTML glass faces, retaining semantic content, links and selectable text. The HTML surfaces use a light white tint and a fine glass edge. All six faces stay mounted and painted while rotating. CSS backface culling hides their reverse surfaces without gating content on the selected face. Only the selected face accepts keyboard focus and interaction. Desktop content does not fade in on face changes; the current photograph and project images are loaded eagerly.
 
-A soft, camera-facing shader at the cube's centre blends two colours with a Gaussian falloff. It is deliberately diffused, rather than an opaque sphere. The orb and glass move together while the light fades softly beyond the edges. These are the original gradient pairs:
+A soft, camera-facing shader at the cube's centre blends two colours with a Gaussian falloff. It is deliberately diffused, rather than an opaque sphere. The orb and glass move together while the light fades softly beyond the edges. WebGL draws only the orb; the glass uses HTML surfaces without extra physical materials, lights or shadow passes. These are the original gradient pairs:
 
 | Face | Section | Upper colour | Lower colour |
 | --- | --- | --- | --- |
@@ -28,3 +28,7 @@ Mobile uses a single visible scrolling section with the original colour washes. 
 ## Intro
 
 The intro keeps the original black screen and white signature, with a 100px white circular cursor using exclusion blending. Its Enter label changes to Loading and the circle grows during the loading sequence. Clicking anywhere enters the portfolio; the full-screen hit area is also keyboard accessible. Touch and keyboard users receive a static Enter hint instead of needing a pointer cursor. The implementation uses native pointer events and works with React 19 without the old cursor package.
+
+## Performance
+
+The scene renders on demand and sleeps when motion and colour transitions finish, when it has no size, or when the tab is hidden. Rotation updates one parent transform; all six face contents remain painted. The glow only redraws when its colours, camera or position change. Its soft canvas uses a bounded pixel budget while text stays full resolution. Expensive moving backdrop filters are replaced with translucent tints. Only the matching desktop/mobile presentation mounts, and the gallery loads the current photograph and its two neighbours. See [PERFORMANCE.md](./PERFORMANCE.md) for the production comparison and reproduction command.
