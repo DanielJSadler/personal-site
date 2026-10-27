@@ -4,7 +4,7 @@ Keep Daniel's signature SVG, Roboto Mono typography, grey background and translu
 
 ## Glass and glow
 
-Three.js owns camera projection and quaternion rotation. HTML content is placed with CSS3DRenderer at the six faces of a transparent WebGL box, retaining semantic content, links and selectable text. The HTML surfaces use a light white tint and a fine glass edge. Only the facing section shows content, avoiding text overlapping through the transparent cube.
+Three.js owns camera projection and quaternion rotation. HTML content is placed with CSS3DRenderer at the six faces of a transparent WebGL box, retaining semantic content, links and selectable text. The HTML surfaces use a light white tint and a fine glass edge. All six faces stay mounted and painted while rotating. CSS backface culling hides their reverse surfaces without gating content on the selected face. Only the selected face accepts keyboard focus and interaction. Desktop content does not fade in on face changes; the current photograph and project images are loaded eagerly.
 
 A soft, camera-facing shader at the cube's centre blends two colours with a Gaussian falloff. It is deliberately diffused, rather than an opaque sphere. The orb and glass move together while the light fades softly beyond the edges. These are the original gradient pairs:
 
@@ -21,6 +21,10 @@ The colours transition with face navigation and with the nearest visible face du
 
 ## Interaction
 
-Drag a face or the space around it to turn the cube. The cube follows the pointer directly and settles on the nearest face when released, keeping its text upright and synchronising the section navigation. Shift-drag moves the cube within bounded space. Links, buttons and form controls retain their normal click behaviour. Pointer capture keeps a drag intact when the cursor leaves the scene.
+Drag a face or the space around it to turn the cube. The cube follows the pointer directly and settles on the nearest face when released, keeping its text upright and synchronising the section navigation. Right-drag, middle-drag or Shift-drag pans the cube within bounded space. Scroll or pinch to zoom; two fingers pan and zoom together on touch screens. Zoom buttons and Reset view provide keyboard-accessible controls. Zoom persists through window resizing, and Reset view restores the default position and magnification. Links, buttons and form controls retain their normal click behaviour. Pointer capture keeps a drag intact when the cursor leaves the scene.
 
 Mobile uses a single visible scrolling section with the original colour washes. Inactive desktop faces are inert and excluded from accessibility navigation. The section buttons provide a keyboard-accessible alternative to dragging.
+
+## Intro
+
+The intro keeps the original black screen and white signature, with a 100px white circular cursor using exclusion blending. Its Enter label changes to Loading and the circle grows during the loading sequence. Clicking anywhere enters the portfolio; the full-screen hit area is also keyboard accessible. Touch and keyboard users receive a static Enter hint instead of needing a pointer cursor. The implementation uses native pointer events and works with React 19 without the old cursor package.

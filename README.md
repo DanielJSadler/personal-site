@@ -7,7 +7,7 @@ npx yarn@1.22.22 install --frozen-lockfile
 npx yarn@1.22.22 dev
 ```
 
-Open http://localhost:3000 and choose **Enter portfolio**. The original signature, translucent cube and colour-changing glow are retained. Drag to turn the cube; Shift-drag to move it. Releasing a turn settles on the nearest section, and the section buttons remain available. [DESIGN.md](./DESIGN.md) explains the scene.
+Open http://localhost:3000 and click anywhere on the intro (or press Enter while focused). The original signature, translucent cube and colour-changing glow are retained. Drag to turn the cube; right-drag or Shift-drag to pan; scroll or pinch to zoom. Two-finger gestures combine pan and zoom, and Reset view restores the default framing. Releasing a turn settles on the nearest section, and the section buttons remain available. [DESIGN.md](./DESIGN.md) explains the scene.
 
 Desktop and tablet use a perspective cube with six glass-like HTML faces and a diffused WebGL orb. Mobile presents one scrolling section at a time. Reduced-motion preferences are respected; navigation also works without WebGL.
 
@@ -21,7 +21,7 @@ npx playwright install chromium
 npx yarn@1.22.22 test:e2e
 ```
 
-Browser checks cover all sections at desktop, tablet and two phone widths, cube rotation and panning, photo navigation, project links, the contact dialog, and navigation without WebGL. The test runner starts a local development server when one is not already running.
+Browser checks cover all sections at desktop, tablet and two phone widths, cube rotation, continuous face rendering, panning, zoom, touch gestures, the custom intro cursor, photo navigation, project links, the contact dialog, and navigation without WebGL. The test runner starts a local development server when one is not already running.
 
 ## Environment
 

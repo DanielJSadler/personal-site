@@ -8,3 +8,4 @@
 [x] - Drag to turn the cube, with Shift-drag to move it and face navigation kept in sync.
 [x] - Add right-drag pan, wheel/pinch zoom, two-finger gestures and reset/zoom controls.
 [x] - Keep every cube face rendered during rotation and remove delayed face/photo reveals.
+[x] - Restore the circular Enter/Loading cursor on the intro with click-anywhere entry.
