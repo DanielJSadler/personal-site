@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import React from "react";
+import { DesignProvider } from "~/components/DesignPicker";
 
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${mono.className}`}>
-      <body>{children}</body>
+      <body><DesignProvider>{children}</DesignProvider></body>
     </html>
   );
 }

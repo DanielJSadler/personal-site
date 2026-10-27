@@ -1,31 +1,30 @@
-# Create T3 App
+# Daniel Sadler's portfolio
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Next.js 16, React 19, Tailwind CSS 4 and Three.js. Use Node.js 22 or newer (Node 24 recommended), with Yarn 1.22.22 as recorded in `package.json`.
 
-## What's next? How do I make an app with this?
+```sh
+npx yarn@1.22.22 install --frozen-lockfile
+npx yarn@1.22.22 dev
+```
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+Open http://localhost:3000 and choose **Enter portfolio**. The **Design** picker at the top right offers the original appearance plus five alternatives, remembering your selection locally. [DESIGN.md](./DESIGN.md) explains each direction and the hybrid Three.js scene.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Desktop and tablet use a perspective cube with six HTML faces and a lit WebGL body. Mobile presents one scrolling section at a time. Reduced-motion preferences are respected; navigation also works without WebGL.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Validation
 
-## Learn More
+```sh
+npx yarn@1.22.22 lint
+npx yarn@1.22.22 typecheck
+npx yarn@1.22.22 build
+npx playwright install chromium
+npx yarn@1.22.22 test:e2e
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+Browser checks cover all sections and design choices at desktop, tablet and two phone widths, photo navigation, project links, design persistence, and opening/closing the contact dialog. The test runner starts a local development server when one is not already running.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Environment
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+The portfolio needs no secrets to render. The existing `/api/slack-webhook` endpoint requires `SLACK_SIGNING_SECRET` when used. Keep secrets in `.env.local` or your host's environment settings.
 
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
-# personal-site
-# personal-site
+Use `yarn start` after a production build. Each feature from [features.md](./features.md) is committed separately on `feature/modernize-cube-designs`.

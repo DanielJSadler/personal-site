@@ -60,6 +60,7 @@ const RightArrow = ({
 }) => (
   <button
     onClick={onClick}
+    aria-label="Next photo"
     className={clsx(
       "absolute right-4 top-1/2 rounded-lg bg-white/10 p-2 shadow-md backdrop-blur-3xl transition-all duration-150 hover:scale-110 focus:outline-none ",
       {

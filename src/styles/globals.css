@@ -177,3 +177,105 @@
 @media (max-width: 767px) { .projects-face { padding: 24px; } .projects-grid { gap: 24px 16px; } .projects-grid img { height: 120px; } }
 @media (max-width: 360px) { .projects-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+.design-root { min-height: 100dvh; }
+.design-picker { position: fixed; top: 16px; right: 20px; z-index: 2000; width: 290px; color: #16243b; background: #fff; border: 1px solid #ccd3de; border-radius: 12px; box-shadow: 0 6px 24px #16243b1a; font: 14px/1.4 Arial, sans-serif; }
+.design-picker summary { cursor: pointer; padding: 13px 16px; font-weight: 600; }
+.design-picker fieldset { padding: 8px 12px 14px; max-height: calc(100dvh - 100px); overflow-y: auto; }
+.design-picker legend { padding: 0 4px; color: #596779; }
+.design-picker label { display: flex; gap: 10px; align-items: flex-start; padding: 10px 4px; cursor: pointer; border-top: 1px solid #e7ebf0; }
+.design-picker input { margin-top: 4px; accent-color: #1c5d99; }
+.design-picker strong, .design-picker small { display: block; }
+.design-picker small { margin-top: 3px; font-size: 12px; color: #596779; }
+[data-design]:not([data-design="original"]) { --paper: #fff; --ink: #172d44; --accent: #1455ce; --stage: #e6ecf2; --line: #172d4440; }
+[data-design]:not([data-design="original"]) .original-home { display: none; }
+[data-design]:not([data-design="original"]) .desktop-world { background: var(--stage); }
+[data-design]:not([data-design="original"]) .three-face { background: var(--paper); color: var(--ink); }
+[data-design]:not([data-design="original"]) .three-face > div { background: transparent; }
+[data-design]:not([data-design="original"]) .mobile-world { background: var(--paper); }
+[data-design]:not([data-design="original"]) .mobile-world > div:empty { display: none; }
+[data-design]:not([data-design="original"]) .mobile-world > div[class*="rounded-full"] { display: none; }
+[data-design]:not([data-design="original"]) .mobile-content > div { background: transparent; }
+[data-design]:not([data-design="original"]) .section-navigation { border-color: var(--line); background: var(--paper); box-shadow: none; backdrop-filter: none; border-radius: var(--nav-radius, 0); }
+[data-design]:not([data-design="original"]) .section-navigation button { border-color: transparent; color: var(--ink); }
+[data-design]:not([data-design="original"]) .section-navigation button span { color: var(--ink); text-transform: none; font-family: inherit; }
+[data-design]:not([data-design="original"]) .section-navigation button:hover { background: var(--stage); }
+[data-design]:not([data-design="original"]) .section-navigation button[aria-current] { box-shadow: inset 3px 0 var(--accent); background: var(--stage); }
+[data-design]:not([data-design="original"]) .mobile-navigation { background: var(--stage); }
+[data-design]:not([data-design="original"]) .projects-face { background: transparent; }
+[data-design]:not([data-design="original"]) :is(.experience-container h1, .experience-container h2, .skill-container h3, .projects-face h1, .projects-grid p) { color: var(--ink); }
+.design-home { width: 100%; height: 100%; padding: 48px; display: flex; flex-direction: column; overflow: auto; color: var(--ink); background: var(--paper); }
+.design-home h1 { font-size: 76px; letter-spacing: -0.055em; line-height: 1; font-weight: 700; }
+.design-home p { font-size: 18px; line-height: 1.55; }
+.home-role { font-size: 15px; }
+/* A software maker's playful, geometric wordmark. */
+[data-design="studio"] { --paper: #ffe98b !important; --ink: #163ec0 !important; --accent: #163ec0 !important; --stage: #aebeff !important; --line: #163ec060 !important; font-family: "Arial Black", Arial, sans-serif; }
+.home-studio { position: relative; justify-content: center; }
+.home-studio h1 { font-family: "Arial Black", Arial, sans-serif; font-size: 94px; position: relative; }
+.home-studio h1 span { color: #d84c73; }
+.home-studio p { margin-top: 28px; }
+.home-studio .home-role { margin-top: auto; padding-top: 28px; }
+.studio-disc { align-self: flex-end; width: 100px; height: 100px; display: grid; place-items: center; border-radius: 50%; background: #163ec0; color: #ffe98b; font-size: 48px; font-weight: 900; transform: rotate(-12deg); }
+[data-design="studio"] .projects-grid img { border-radius: 0; box-shadow: 7px 7px #163ec0; }
+/* An outdoor route gives the personal side of the portfolio its rhythm. */
+[data-design="trail"] { --paper: #d9e8c4 !important; --ink: #214d3e !important; --accent: #76459e !important; --stage: #bdb2d4 !important; --line: #214d3e50 !important; --nav-radius: 24px; }
+.home-trail { justify-content: space-between; font-family: "Trebuchet MS", sans-serif; }
+.home-trail h1 { font-size: 68px; font-weight: 500; line-height: 1.06; }
+.home-trail h1 em { font-family: Georgia, serif; font-size: 58px; }
+.home-trail .home-role { font-size: 15px; }
+.trail-path { display: flex; gap: 14px; height: 55px; align-items: center; }
+.trail-path span { display: block; width: 75px; height: 38px; border-top: 3px solid #76459e; border-radius: 50%; transform: rotate(-20deg); }
+.trail-path span:nth-child(2) { transform: rotate(20deg); }
+[data-design="trail"] .projects-grid img { border-radius: 28px 4px 28px 4px; }
+[data-design="trail"] .experience-container { font-family: "Trebuchet MS", sans-serif; }
+/* Porcelain blue and roast brown connect the work to Daniel's coffee craft. */
+[data-design="coffee"] { --paper: #d8e5ed !important; --ink: #503627 !important; --accent: #92582f !important; --stage: #bc9678 !important; --line: #50362740 !important; }
+.home-coffee { font-family: Georgia, serif; justify-content: space-between; }
+.coffee-heading { display: flex; justify-content: space-between; font: 15px/1.5 Arial, sans-serif; }
+.home-coffee h1 { font-size: 100px; font-weight: 400; line-height: .95; }
+.home-coffee h1 em { font-weight: 400; }
+.coffee-bottom { display: flex; align-items: flex-end; gap: 24px; }
+.coffee-bottom img { width: 180px; height: 190px; object-fit: cover; border-radius: 90px 90px 0 0; }
+.coffee-bottom p { font: 16px/1.6 Arial, sans-serif; }
+[data-design="coffee"] .experience-container h1, [data-design="coffee"] .projects-face h1 { font-family: Georgia, serif; text-transform: none; }
+/* Photography leads, using existing images rather than decorative stock. */
+[data-design="gallery"] { --paper: #fff !important; --ink: #25344a !important; --accent: #3366a8 !important; --stage: #e4e7eb !important; --line: #25344a30 !important; }
+.home-gallery { padding: 36px; gap: 24px; font-family: "Helvetica Neue", Arial, sans-serif; }
+.home-gallery h1 { font-size: 44px; font-weight: 400; letter-spacing: -.04em; }
+.home-gallery header p { font-size: 14px; margin-top: 10px; }
+.contact-sheet { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; flex: 1; min-height: 0; }
+.contact-sheet img { width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+.home-gallery .gallery-caption { font-size: 13px; }
+[data-design="gallery"] .projects-grid { grid-template-columns: 1fr; }
+[data-design="gallery"] .projects-grid a { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 24px; }
+[data-design="gallery"] .projects-grid img { height: 140px; border-radius: 0; }
+/* A spatial engineering sketch echoes the cube's construction. */
+[data-design="workshop"] { --paper: #e8f2fb !important; --ink: #204573 !important; --accent: #a13b3e !important; --stage: #b1c9de !important; --line: #20457350 !important; }
+.home-workshop { background-image: linear-gradient(#2045730d 1px, transparent 1px), linear-gradient(90deg, #2045730d 1px, transparent 1px); background-size: 24px 24px; font-family: "Courier New", monospace; justify-content: space-between; }
+.workshop-heading { display: flex; flex-direction: column; gap: 4px; font-size: 15px; }
+.home-workshop h1 { font-size: 72px; letter-spacing: -.065em; font-weight: 400; }
+.workshop-diagram { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 14px; }
+.workshop-diagram span { border: 1px solid #204573; padding: 16px 8px; }
+.workshop-diagram b { color: #a13b3e; }
+.home-workshop p { font-size: 16px; }
+[data-design="workshop"] .projects-grid img { border-radius: 0; border: 1px solid var(--ink); }
+@media (max-width: 767px) {
+ .design-picker { top: 8px; right: 8px; width: 250px; }
+ .design-picker summary { padding: 10px 12px; font-size: 12px; }
+ .design-home { padding: 72px 24px 24px; min-height: 100%; }
+ .home-studio h1 { font-size: clamp(54px, 18vw, 76px); }
+ .studio-disc { width: 72px; height: 72px; font-size: 36px; }
+ .home-trail h1 { font-size: clamp(42px, 12vw, 56px); }
+ .home-trail h1 em { font-size: 42px; }
+ .home-trail .home-role { font-size: 12px; }
+ .home-coffee h1 { font-size: 72px; margin: 24px 0; }
+ .coffee-heading { font-size: 12px; }
+ .coffee-bottom { gap: 16px; }
+ .coffee-bottom img { width: 120px; height: 160px; }
+ .coffee-bottom p { font-size: 12px; }
+ .home-gallery h1 { font-size: 36px; }
+ .contact-sheet { min-height: 280px; }
+ .home-workshop h1 { font-size: 54px; margin: 24px 0; }
+ .workshop-diagram { font-size: 10px; }
+ .workshop-diagram span { padding: 12px 4px; }
+ [data-design="gallery"] .projects-grid a { grid-template-columns: 1fr; gap: 8px; }
+}

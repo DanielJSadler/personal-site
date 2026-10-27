@@ -78,7 +78,7 @@ export function ThreeCube({ active, children }: { active: Side; children: ReactN
       const { width, height } = container.getBoundingClientRect();
       if (!width || !height) return;
       camera.aspect = width / height;
-      camera.position.set(240, 170, 320 + 490 / (Math.tan(THREE.MathUtils.degToRad(19)) * Math.min(camera.aspect, 1)));
+      camera.position.set(650, 500, 320 + 490 / (Math.tan(THREE.MathUtils.degToRad(19)) * Math.min(camera.aspect, 1)));
       camera.lookAt(0, 0, 0);
       camera.updateProjectionMatrix();
       html.setSize(width, height);
