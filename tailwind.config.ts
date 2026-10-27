@@ -1,5 +1,5 @@
 import { type Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
+
 
 export default {
   content: ["./src/**/*.tsx"],
@@ -23,5 +23,5 @@ export default {
       },
     },
   },
-  plugins: [require("@tailwindcss/container-queries")],
+  plugins: [],
 } satisfies Config;

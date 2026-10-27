@@ -8,10 +8,10 @@ export const TravelMap = () => {
     { country: "be", value: 2024 },
     { country: "pt", value: 2023 },
     { country: "es", value: 2022 },
-    { country: "uk", value: 1999 },
-    { country: "sg", value: 2019 },
+    { country: "gb", value: 1999 },
+    // Singapore is not included in the map library's geography.
     { country: "nl", value: 2017 },
-  ];
+  ] as const;
   return (
     <WorldMap
       color="black"
@@ -19,7 +19,7 @@ export const TravelMap = () => {
       value-suffix="Visited"
       size="md"
       tooltipTextColor="black"
-      data={data}
+      data={[...data]}
     />
   );
 };

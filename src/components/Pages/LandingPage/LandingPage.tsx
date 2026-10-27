@@ -8,22 +8,7 @@ interface Props {
   loading: boolean;
   loadingArray: string[];
 }
-import dynamic from "next/dynamic";
 import { LoadingBar } from "~/components/Atoms/LoadingBar/LoadingBar";
-
-const AnimatedCursor = dynamic(() => import("react-animated-cursor"), {
-  ssr: false,
-});
-
-const LoadingText = ({ loading }: { loading: boolean }) => (
-  <div>
-    {loading ? (
-      <p className="text-base font-medium text-black">LOADING</p>
-    ) : (
-      <p className="text-base font-medium text-black">ENTER</p>
-    )}
-  </div>
-);
 
 export const LandingPage = ({
   onClick,
@@ -33,27 +18,10 @@ export const LandingPage = ({
 }: Props) => {
   return (
     <section
-      onClick={onClick}
       style={{ zIndex: 1000 }}
       className={`landing-page absolute z-[1000] flex h-screen w-screen flex-col items-center justify-center bg-black ${visible ? `flex` : `hidden`}`}
     >
-      {visible && (
-        <AnimatedCursor
-          innerSize={0}
-          outerSize={100}
-          color="255, 255, 255"
-          trailingSpeed={1}
-          outerScale={loading ? 2 : 1}
-          outerAlpha={1}
-          outerStyle={{
-            mixBlendMode: "exclusion",
-            cursor: "none",
-          }}
-          clickables={[{ target: ".landing-page" }]}
-        >
-          <LoadingText loading={loading} />
-        </AnimatedCursor>
-      )}
+      <button type="button" onClick={onClick} disabled={loading} className="mt-8 border border-white px-6 py-3 text-white" aria-label="Enter portfolio">{loading ? "Opening?" : "Enter portfolio"}</button>
       <div>
         <DanielSadlerSvg fill="white" className="hidden md:flex" />
         <MobileDanielSadlerSvg fill="white" className="flex md:hidden" />
