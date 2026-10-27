@@ -19,32 +19,32 @@ export const Mobile = ({ currentClass, setCurrentClass }: Props) => {
     }, 200);
   };
   return (
-    <div className="flex h-full w-full items-center justify-center md:hidden">
-      <div className="absolute bottom-16 z-[10000] flex w-full items-center justify-center">
-        <Navigation handleButtonClick={handleButtonClick} />
+    <div className="mobile-world relative flex h-full w-full items-center justify-center md:hidden">
+      <div className="mobile-navigation absolute bottom-0 z-50 flex w-full items-center justify-center">
+        <Navigation handleButtonClick={handleButtonClick} currentSide={currentClass.replace("show-", "")} />
       </div>
       <Gradients currentClass={currentClass} />
-      <div className={`absolute h-full w-full`}>
+      <div hidden={currentClass !== "show-front"} className="mobile-content absolute h-full w-full">
         <Homepage showContent={currentClass === "show-front"} />
       </div>
-      <div className={`absolute h-full w-full`}>
+      <div hidden={currentClass !== "show-back"} className="mobile-content absolute h-full w-full">
         <Pictures showContent={currentClass === "show-back"} />
       </div>
-      <div className={`absolute h-full w-full`}>
+      <div hidden={currentClass !== "show-right"} className="mobile-content absolute h-full w-full">
         <SkillsPage showContent={currentClass === "show-right"} />
       </div>
 
-      <div className={`absolute z-50 h-full w-full`}>
+      <div hidden={currentClass !== "show-left"} className="mobile-content absolute h-full w-full">
         <Portfolio showContent={currentClass === "show-left"} />
       </div>
-      <div className={`absolute h-full w-full @container/experience`}>
+      <div hidden={currentClass !== "show-bottom"} className="mobile-content absolute h-full w-full">
         <Experience
           showContent={currentClass === "show-bottom"}
           header="Hi! I'm Daniel"
           text="I’m a full-stack developer passionate about creating seamless, user-friendly applications. With a focus on web technologies like React, Next.js, and Tailwind, I build responsive, high-performance interfaces. I also have extensive experience in mobile development with React Native. On the backend, I specialise in Node.js, Postgres, Prisma, and GraphQL, delivering robust and scalable solutions."
         />
       </div>
-      <div className={`absolute h-full w-full @container/experience`}>
+      <div hidden={currentClass !== "show-top"} className="mobile-content absolute h-full w-full">
         <Experience
           showContent={currentClass === "show-top"}
           header="More about me"

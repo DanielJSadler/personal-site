@@ -151,3 +151,29 @@
   width: 100%;
   z-index: 1000000;
 }
+/* Face content stays inside its own scroll area. */
+.three-face > * { max-width: 100%; }
+.three-face .skill-container { padding: 24px; gap: 8px; justify-content: flex-start; overflow-y: auto; }
+.three-face .skill-container > div { padding: 16px; }
+.three-face .experience-container { padding: 48px; justify-content: center; overflow-y: auto; }
+.experience-container h2 { line-height: 1.7; max-width: 65ch; }
+.projects-face { width: 100%; height: 100%; overflow-y: auto; padding: 36px; background: #ffffff59; }
+.projects-face h1 { font-size: 26px; margin-bottom: 24px; color: #222; }
+.projects-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 24px; }
+.projects-grid a { min-width: 0; height: auto; }
+.projects-grid img { width: 100%; height: 180px; object-fit: cover; }
+.projects-grid p { font-size: 13px; overflow-wrap: anywhere; }
+.mobile-content { inset: 0 0 145px; height: auto; overflow: auto; }
+.mobile-content[hidden] { display: none; }
+.mobile-content .skill-container { padding: 16px 12px; justify-content: flex-start; }
+.mobile-content .skill-container > div { padding: 16px; }
+.mobile-content .experience-container { min-height: 100%; height: auto; padding: 32px 24px; justify-content: center; }
+.mobile-content .experience-container h2 { font-size: 16px; }
+.mobile-navigation { background: #d8d8d8ed; padding: 8px 8px max(8px, env(safe-area-inset-bottom)); }
+.mobile-navigation .section-navigation { width: 100%; padding: 8px; gap: 6px; }
+.mobile-navigation button { min-height: 44px; padding: 8px 10px; }
+.mobile-navigation button span { font-size: 11px; }
+:focus-visible { outline: 3px solid #1c5d99; outline-offset: 4px; }
+@media (max-width: 767px) { .projects-face { padding: 24px; } .projects-grid { gap: 24px 16px; } .projects-grid img { height: 120px; } }
+@media (max-width: 360px) { .projects-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }

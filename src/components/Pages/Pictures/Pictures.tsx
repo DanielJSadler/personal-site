@@ -38,8 +38,9 @@ const LeftArrow = ({
 }) => (
   <button
     onClick={onClick}
+    aria-label="Previous photo"
     className={clsx(
-      "absolute left-4 top-1/2 rounded-lg bg-white/10 p-2 shadow-md backdrop-blur-3xl transition-all duration-150 hover:scale-110 focus:outline-none lg:-left-10",
+      "absolute left-4 top-1/2 rounded-lg bg-white/10 p-2 shadow-md backdrop-blur-3xl transition-all duration-150 hover:scale-110 focus:outline-none ",
       {
         "fade-in z-[1000]": showContent,
         "fade-out": !showContent,
@@ -60,7 +61,7 @@ const RightArrow = ({
   <button
     onClick={onClick}
     className={clsx(
-      "absolute right-4 top-1/2 rounded-lg bg-white/10 p-2 shadow-md backdrop-blur-3xl transition-all duration-150 hover:scale-110 focus:outline-none lg:-right-10",
+      "absolute right-4 top-1/2 rounded-lg bg-white/10 p-2 shadow-md backdrop-blur-3xl transition-all duration-150 hover:scale-110 focus:outline-none ",
       {
         "fade-in z-[1000]": showContent,
         "fade-out": !showContent,
@@ -113,7 +114,7 @@ export const Pictures = ({ showContent }: Props) => {
       <div
         ref={ref}
         className={clsx(
-          "relative h-screen w-screen overflow-hidden bg-white/35 duration-1000 lg:h-full lg:w-full",
+          "relative h-full w-full overflow-hidden bg-white/35 duration-1000 lg:h-full lg:w-full",
           {
             "fade-in": showContent,
             "fade-out": !showContent,
@@ -141,9 +142,9 @@ export const Pictures = ({ showContent }: Props) => {
               <Image
                 src={photo.src}
                 alt={`Photo ${photo.src}`}
-                layout="fill"
-                className="o"
-                objectFit="cover"
+                fill
+                sizes="(max-width: 767px) 100vw, 640px"
+                className="object-cover"
               />
             </div>
           ))}
@@ -151,7 +152,7 @@ export const Pictures = ({ showContent }: Props) => {
       </div>
       <div
         className={clsx(
-          "absolute top-2 flex w-screen items-center justify-center lg:-top-12 lg:w-full",
+          "absolute top-2 flex w-full items-center justify-center lg:top-4 lg:w-full",
           {
             "fade-in z-[1000]": showContent,
             "fade-out": !showContent,

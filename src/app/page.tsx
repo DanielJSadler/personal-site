@@ -25,22 +25,20 @@ const Page = () => {
   };
 
   useEffect(() => {
-    if (!visible) {
+    const updateHeight = () => {
       const vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty("--vh", `${vh}px`);
-      window.addEventListener("resize", () => {
-        document.documentElement.style.setProperty("--vh", `${vh}px`);
-      });
-    }
-  }, [visible]);
+    };
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
 
   return (
     <div
       style={{ height: "calc(var(--vh, 1vh) * 100)" }}
-      className={`relative h-screen w-screen overflow-y-hidden ${visible ? `cursor-none` : `cursor-default`} font-mono`}
+      className="portfolio-app relative h-screen w-screen overflow-y-hidden font-mono"
     >
-      <meta name="apple-mobile-web-app-capable" content="yes" />
-      <meta name="viewport" content="width=device-width" />
       <LandingPage
         onClick={handleClick}
         visible={visible}

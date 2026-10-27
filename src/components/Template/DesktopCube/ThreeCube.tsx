@@ -51,7 +51,7 @@ export function ThreeCube({ active, children }: { active: Side; children: ReactN
       renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.shadowMap.type = THREE.PCFShadowMap;
       renderer.domElement.className = "three-canvas";
       renderer.domElement.setAttribute("aria-hidden", "true");
       container.prepend(renderer.domElement);
@@ -78,7 +78,7 @@ export function ThreeCube({ active, children }: { active: Side; children: ReactN
       const { width, height } = container.getBoundingClientRect();
       if (!width || !height) return;
       camera.aspect = width / height;
-      camera.position.set(70, 55, 320 + 490 / (Math.tan(THREE.MathUtils.degToRad(19)) * Math.min(camera.aspect, 1)));
+      camera.position.set(240, 170, 320 + 490 / (Math.tan(THREE.MathUtils.degToRad(19)) * Math.min(camera.aspect, 1)));
       camera.lookAt(0, 0, 0);
       camera.updateProjectionMatrix();
       html.setSize(width, height);
