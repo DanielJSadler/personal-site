@@ -11,13 +11,21 @@ const rotations: Record<Side, [number, number, number]> = {
   front: [0, 0, 0], right: [0, Math.PI / 2, 0], back: [0, Math.PI, 0],
   left: [0, -Math.PI / 2, 0], top: [-Math.PI / 2, 0, 0], bottom: [Math.PI / 2, 0, 0],
 };
+// The original six gradient pairs, now lighting the centre of the glass cube.
+const glowColors: Record<Side, [string, string]> = {
+  front: ["#00C2FF", "#293FFF"], right: ["#00C2FF", "#FF29C3"],
+  back: ["#FF29C3", "#FFD700"], left: ["#FFD700", "#4CAF50"],
+  top: ["#4CAF50", "#FF5733"], bottom: ["#FF5733", "#00C2FF"],
+};
 
 /** HTML faces share a camera and world coordinates with the WebGL body. */
-export function ThreeCube({ active, children }: { active: Side; children: ReactNode[] }) {
+export function ThreeCube({ active, onSideChange, children }: { active: Side; onSideChange: (side: Side) => void; children: ReactNode[] }) {
   const host = useRef<HTMLDivElement>(null);
   const target = useRef(active);
+  const onChange = useRef(onSideChange);
   const [faces, setFaces] = useState<HTMLDivElement[]>([]);
   useEffect(() => { target.current = active; }, [active]);
+  useEffect(() => { onChange.current = onSideChange; }, [onSideChange]);
 
   useEffect(() => {
     if (!host.current) return;
@@ -46,6 +54,7 @@ export function ThreeCube({ active, children }: { active: Side; children: ReactN
     let renderer: THREE.WebGLRenderer | undefined;
     let body: THREE.Mesh | undefined;
     let floor: THREE.Mesh | undefined;
+    let orb: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial> | undefined;
     // HTML remains usable on devices where WebGL is unavailable.
     try {
       renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -55,10 +64,29 @@ export function ThreeCube({ active, children }: { active: Side; children: ReactN
       renderer.domElement.className = "three-canvas";
       renderer.domElement.setAttribute("aria-hidden", "true");
       container.prepend(renderer.domElement);
-      body = new THREE.Mesh(new THREE.BoxGeometry(640, 640, 640), new THREE.MeshStandardMaterial({ color: 0xb9c8cf, roughness: 0.7 }));
-      body.castShadow = true;
+      body = new THREE.Mesh(new THREE.BoxGeometry(640, 640, 640), new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.035, roughness: 0.25, depthWrite: false }));
       scene.add(body);
-      floor = new THREE.Mesh(new THREE.PlaneGeometry(6000, 6000), new THREE.ShadowMaterial({ opacity: 0.18 }));
+      const uniforms = {
+        upper: { value: new THREE.Color(glowColors[target.current][0]) },
+        lower: { value: new THREE.Color(glowColors[target.current][1]) },
+      };
+      orb = new THREE.Mesh(new THREE.PlaneGeometry(1200, 1200), new THREE.ShaderMaterial({
+        uniforms, transparent: true, depthWrite: false, depthTest: false,
+        vertexShader: `varying vec2 vUv;
+          void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+        fragmentShader: `uniform vec3 upper; uniform vec3 lower; varying vec2 vUv;
+          void main() {
+            vec2 p = (vUv - 0.5) * 2.0;
+            float radius = length(p);
+            float diffusion = exp(-4.8 * radius * radius) * (1.0 - smoothstep(0.65, 1.0, radius));
+            vec3 colour = mix(lower, upper, smoothstep(0.2, 0.8, vUv.y));
+            gl_FragColor = vec4(colour, diffusion * 0.95);
+            #include <colorspace_fragment>
+          }`,
+      }));
+      orb.renderOrder = 2;
+      scene.add(orb);
+      floor = new THREE.Mesh(new THREE.PlaneGeometry(6000, 6000), new THREE.ShadowMaterial({ opacity: 0.04 }));
       floor.rotation.x = -Math.PI / 2;
       floor.position.y = -470;
       floor.receiveShadow = true;
@@ -72,6 +100,7 @@ export function ThreeCube({ active, children }: { active: Side; children: ReactN
       light.shadow.camera.far = 5000;
       light.shadow.mapSize.set(1024, 1024);
       scene.add(light);
+      container.dataset.webgl = "true";
     } catch { /* CSS3D uses the same real perspective camera without WebGL. */ }
 
     const resize = () => {
@@ -90,6 +119,64 @@ export function ThreeCube({ active, children }: { active: Side; children: ReactN
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const desired = new THREE.Quaternion();
     const euler = new THREE.Euler();
+    const normal = new THREE.Vector3();
+    const viewDirection = new THREE.Vector3();
+    const upperColour = new THREE.Color();
+    const lowerColour = new THREE.Color();
+    let pointer: { id: number; x: number; y: number; startX: number; startY: number; pan: boolean; moved: boolean } | undefined;
+    const nearestSide = () => {
+      viewDirection.copy(camera.position).sub(group.position).normalize();
+      let best: Side = target.current;
+      let score = -Infinity;
+      for (const side of sides) {
+        normal.set(0, 0, 1).applyEuler(euler.set(...rotations[side])).applyQuaternion(group.quaternion);
+        const facing = normal.dot(viewDirection);
+        if (facing > score) { score = facing; best = side; }
+      }
+      return best;
+    };
+    const down = (event: PointerEvent) => {
+      if (event.button !== 0 || pointer || !(event.target instanceof Element)) return;
+      if (event.target.closest("a, button, input, select, textarea, [role=button]")) return;
+      pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, startX: event.clientX, startY: event.clientY, pan: event.shiftKey, moved: false };
+      container.setPointerCapture(event.pointerId);
+    };
+    const move = (event: PointerEvent) => {
+      if (!pointer || pointer.id !== event.pointerId) return;
+      if (!pointer.moved && Math.hypot(event.clientX - pointer.startX, event.clientY - pointer.startY) < 5) return;
+      pointer.moved = true;
+      container.setPointerCapture(event.pointerId);
+      container.classList.add("is-dragging");
+      const dx = event.clientX - pointer.x;
+      const dy = event.clientY - pointer.y;
+      if (pointer.pan) {
+        group.position.x = THREE.MathUtils.clamp(group.position.x + dx * 1.4, -280, 280);
+        group.position.y = THREE.MathUtils.clamp(group.position.y - dy * 1.4, -180, 180);
+      } else {
+        const turn = new THREE.Quaternion().setFromEuler(new THREE.Euler(dy * 0.008, dx * 0.008, 0));
+        group.quaternion.premultiply(turn).normalize();
+        target.current = nearestSide();
+      }
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      event.preventDefault();
+    };
+    const up = (event: PointerEvent) => {
+      if (!pointer || pointer.id !== event.pointerId) return;
+      const moved = pointer.moved;
+      pointer = undefined;
+      container.classList.remove("is-dragging");
+      if (container.hasPointerCapture(event.pointerId)) container.releasePointerCapture(event.pointerId);
+      if (moved) {
+        target.current = nearestSide();
+        onChange.current(target.current);
+      }
+    };
+    container.addEventListener("pointerdown", down);
+    container.addEventListener("pointermove", move);
+    container.addEventListener("pointerup", up);
+    container.addEventListener("pointercancel", up);
+    container.addEventListener("lostpointercapture", up);
     let frame = 0;
     let previous = performance.now();
     const animate = (now: number) => {
@@ -97,8 +184,20 @@ export function ThreeCube({ active, children }: { active: Side; children: ReactN
       previous = now;
       euler.set(...rotations[target.current]);
       desired.setFromEuler(euler).invert();
-      group.quaternion.slerp(desired, reducedMotion.matches ? 1 : 1 - Math.exp(-7 * delta));
+      if (!pointer?.moved) group.quaternion.slerp(desired, reducedMotion.matches ? 1 : 1 - Math.exp(-7 * delta));
       body?.quaternion.copy(group.quaternion);
+      body?.position.copy(group.position);
+      container.dataset.activeSide = target.current;
+      if (orb) {
+        orb.position.copy(group.position);
+        orb.quaternion.copy(camera.quaternion);
+        upperColour.set(glowColors[target.current][0]);
+        lowerColour.set(glowColors[target.current][1]);
+        const uniforms = orb.material.uniforms as { upper: { value: THREE.Color }; lower: { value: THREE.Color } };
+        const blend = reducedMotion.matches ? 1 : 1 - Math.exp(-3 * delta);
+        uniforms.upper.value.lerp(upperColour, blend);
+        uniforms.lower.value.lerp(lowerColour, blend);
+      }
       elements.forEach((element, index) => {
         const selected = sides[index] === target.current;
         element.inert = !selected;
@@ -113,6 +212,11 @@ export function ThreeCube({ active, children }: { active: Side; children: ReactN
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
+      container.removeEventListener("pointerdown", down);
+      container.removeEventListener("pointermove", move);
+      container.removeEventListener("pointerup", up);
+      container.removeEventListener("pointercancel", up);
+      container.removeEventListener("lostpointercapture", up);
       scene.traverse((object) => {
         if (object instanceof THREE.Mesh) {
           object.geometry.dispose();
@@ -123,8 +227,13 @@ export function ThreeCube({ active, children }: { active: Side; children: ReactN
       renderer?.dispose();
       renderer?.domElement.remove();
       html.domElement.remove();
+      delete container.dataset.webgl;
     };
   }, []);
 
-  return <div ref={host} className="three-stage">{faces.map((face, i) => createPortal(children[i], face, sides[i]))}</div>;
+  return <div ref={host} className="three-stage" aria-label="Interactive portfolio cube" aria-describedby="cube-instructions">
+    <div className="cube-glow-fallback" aria-hidden="true" />
+    {faces.map((face, i) => createPortal(children[i], face, sides[i]))}
+    <p id="cube-instructions" className="cube-instructions">Drag to turn · Shift + drag to move</p>
+  </div>;
 }

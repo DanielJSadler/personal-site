@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { DesignHome } from "./DesignHome";
+
 import {
   DanielSadlerSvg,
   MobileDanielSadlerSvg,
@@ -22,6 +22,6 @@ export const Homepage = ({ showContent }: Props) => (
       <DanielSadlerSvg fill="black" className="hidden md:flex" />
       <MobileDanielSadlerSvg fill="black" className="flex md:hidden" />
     </section>
-    <DesignHome />
+
   </div>
 );

@@ -3,12 +3,12 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import React from "react";
-import { DesignProvider } from "~/components/DesignPicker";
+
 
 
 export const metadata: Metadata = {
   title: "Daniel Sadler",
-  description: "Daniel Sadler ? full-stack developer. Projects, skills, photography, and more.",
+  description: "Daniel Sadler - full-stack developer. Projects, skills, photography, and more.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
   openGraph: {
     images: "",
@@ -22,7 +22,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${mono.className}`}>
-      <body><DesignProvider>{children}</DesignProvider></body>
+      <body>{children}</body>
     </html>
   );
 }

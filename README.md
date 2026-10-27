@@ -7,9 +7,9 @@ npx yarn@1.22.22 install --frozen-lockfile
 npx yarn@1.22.22 dev
 ```
 
-Open http://localhost:3000 and choose **Enter portfolio**. The **Design** picker at the top right offers the original appearance plus five alternatives, remembering your selection locally. [DESIGN.md](./DESIGN.md) explains each direction and the hybrid Three.js scene.
+Open http://localhost:3000 and choose **Enter portfolio**. The original signature, translucent cube and colour-changing glow are retained. Drag to turn the cube; Shift-drag to move it. Releasing a turn settles on the nearest section, and the section buttons remain available. [DESIGN.md](./DESIGN.md) explains the scene.
 
-Desktop and tablet use a perspective cube with six HTML faces and a lit WebGL body. Mobile presents one scrolling section at a time. Reduced-motion preferences are respected; navigation also works without WebGL.
+Desktop and tablet use a perspective cube with six glass-like HTML faces and a diffused WebGL orb. Mobile presents one scrolling section at a time. Reduced-motion preferences are respected; navigation also works without WebGL.
 
 ## Validation
 
@@ -21,7 +21,7 @@ npx playwright install chromium
 npx yarn@1.22.22 test:e2e
 ```
 
-Browser checks cover all sections and design choices at desktop, tablet and two phone widths, photo navigation, project links, design persistence, and opening/closing the contact dialog. The test runner starts a local development server when one is not already running.
+Browser checks cover all sections at desktop, tablet and two phone widths, cube rotation and panning, photo navigation, project links, the contact dialog, and navigation without WebGL. The test runner starts a local development server when one is not already running.
 
 ## Environment
 
