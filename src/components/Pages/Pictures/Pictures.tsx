@@ -1,7 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
 import clsx from "clsx";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 const existingPhotos = [
   { src: "/photos/IMG_0054.webp", width: 3024, height: 4032 },
@@ -94,7 +94,6 @@ const RightArrow = ({
 
 export const Pictures = ({ showContent }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [heightAndWidth, setHeightAndWidth] = useState({ height: 0, width: 0 });
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
@@ -108,31 +107,9 @@ export const Pictures = ({ showContent }: Props) => {
     );
   };
 
-  const ref = useRef<HTMLDivElement>(null);
-
-  const updateDimensions = () => {
-    if (ref.current) {
-      setHeightAndWidth({
-        height: ref.current.clientHeight,
-        width: ref.current.clientWidth,
-      });
-    }
-  };
-
-  useEffect(() => {
-    updateDimensions();
-
-    window.addEventListener("resize", updateDimensions);
-
-    return () => {
-      window.removeEventListener("resize", updateDimensions);
-    };
-  }, [showContent]);
-
-  return (
+return (
     <>
       <div
-        ref={ref}
         className={clsx(
           "relative h-full w-full overflow-hidden bg-white/35 duration-1000 lg:h-full lg:w-full",
           {
@@ -144,25 +121,20 @@ export const Pictures = ({ showContent }: Props) => {
         <div
           className="absolute flex h-full w-full items-center bg-transparent transition-transform duration-1000 ease-in-out"
           style={{
-            transform: `translateX(-${currentIndex * heightAndWidth.width * 2}px)`,
-            width: `${photos.length * 100}%`,
+            transform: `translateX(-${currentIndex * 100}%)`,
             zIndex: 2,
           }}
         >
           {photos.map((photo) => (
             <div
               key={photo.src}
-              className="relative flex-shrink-0"
-              style={{
-                height: heightAndWidth.height,
-                width: heightAndWidth.width,
-                marginRight: heightAndWidth.width,
-              }}
+              className="relative h-full w-full shrink-0"
             >
               <Image
                 src={photo.src}
                 alt={"alt" in photo ? String(photo.alt) : `Travel photograph ${photos.indexOf(photo) + 1} from Daniel's collection`}
                 fill
+                loading={photos.indexOf(photo) === currentIndex ? "eager" : "lazy"}
                 sizes="(max-width: 767px) 100vw, 640px"
                 className="object-contain"
               />

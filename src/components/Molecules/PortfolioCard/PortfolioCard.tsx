@@ -37,6 +37,7 @@ export const PortfolioCard = ({
         alt={name}
         height={imageHeight}
         width={imageWidth}
+        loading="eager"
         className="aspect-square h-full w-full rounded-lg object-cover object-left"
       />
       <div className="flex w-full max-w-[500px] flex-row items-center justify-between">

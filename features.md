@@ -7,3 +7,4 @@
 [x] - Keep the original design and restore the translucent cube with its diffused, face-coloured central glow.
 [x] - Drag to turn the cube, with Shift-drag to move it and face navigation kept in sync.
 [x] - Add right-drag pan, wheel/pinch zoom, two-finger gestures and reset/zoom controls.
+[x] - Keep every cube face rendered during rotation and remove delayed face/photo reveals.

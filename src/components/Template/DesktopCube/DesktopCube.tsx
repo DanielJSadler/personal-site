@@ -32,7 +32,7 @@ const DesktopCube = forwardRef<DesktopCubeRef, DesktopCubeProps>(
    <ThreeCube active={active} onSideChange={side => setCurrentClass(`show-${side}`)}>{[
     <Homepage key="home" showContent />,
     <SkillsPage key="skills" showContent />,
-    <Pictures key="pictures" showContent={active === "back"} />,
+    <Pictures key="pictures" showContent />,
     <PortfolioDesktop key="portfolio" showContent />,
     <Experience key="bio" showContent header="More about me" text="When I'm not coding, you'll often find me out running, having completed my first half marathon in 2024! I also completed a sprint triathlon in summer 2023. I enjoy specialty coffee, craft beer, and have a background in coffee roasting and barista work. I also love to travel and am hoping to do 30 countries before I am 30." />,
     <Experience key="about" showContent header="Hi! I'm Daniel" text="I'm a full-stack developer passionate about creating seamless, user-friendly applications. With a focus on React, Next.js, and Tailwind, I build responsive, high-performance interfaces. I also work with React Native, Node.js, Postgres, Prisma, and GraphQL." />,

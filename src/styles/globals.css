@@ -176,7 +176,7 @@
 .three-stage.is-dragging { cursor: grabbing; user-select: none; }
 .three-stage.is-dragging * { cursor: grabbing !important; user-select: none; }
 .three-face > div, .three-face .projects-face { background: rgb(255 255 255 / 0.10); }
-.three-face[aria-hidden="true"] > * { visibility: hidden; }
+.three-face .fade-in { animation: none; opacity: 1; }
 .three-face img { -webkit-user-drag: none; }
 .cube-instructions { position: absolute; left: 0; bottom: 24px; width: 100%; text-align: center; font-size: 12px; color: #444; pointer-events: none; }
 .cube-glow-fallback { position: absolute; left: 50%; top: 50%; width: min(60vh, 65%); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; filter: blur(50px); background: linear-gradient(var(--glow-upper, #00c2ff), var(--glow-lower, #293fff)); opacity: 0.8; }

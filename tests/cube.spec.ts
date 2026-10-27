@@ -14,6 +14,12 @@ test("drag rotates the glass cube, selects a face, and Shift-drag moves it", asy
   const background = await face.evaluate(element => getComputedStyle(element).backgroundColor);
   expect(background).toMatch(/rgba\(255, 255, 255, 0\.09\)/);
   await expect(stage).toHaveAttribute("data-webgl", "true");
+  // Inactive faces remain painted while only the selected face accepts focus.
+  for (const side of ["front", "right", "back", "left", "top", "bottom"]) {
+    const content = page.locator(`.three-face[data-side="${side}"] > :first-child`);
+    await expect(content).toHaveCSS("visibility", "visible");
+    await expect(content).toHaveCSS("opacity", "1");
+  }
   await page.mouse.move(750, 500);
   await page.mouse.down();
   await page.mouse.move(1000, 540, { steps: 20 });
